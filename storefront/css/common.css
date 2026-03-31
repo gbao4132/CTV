@@ -63,3 +63,44 @@ header {
     from { opacity: 0; transform: translateX(10px); }
     to { opacity: 1; transform: translateX(0); }
 }
+
+/* --- CSS CHO BANNER LƠ LỬNG HAI BÊN (ĐÃ SỬA LỖI ĐÈ NỘI DUNG) --- */
+.floating-banner {
+    position: fixed;
+    top: 150px; 
+    z-index: 99; 
+    width: 140px; /* Thu gọn một chút xíu cho an toàn */
+    transition: transform 0.3s ease;
+}
+
+.floating-banner:hover {
+    transform: scale(1.05); 
+}
+
+.floating-banner img {
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+}
+
+/* 1. Ẩn hoàn toàn nếu màn hình nhỏ hơn 1450px (Vì 2 bên mép không còn đủ chỗ chứa) */
+@media (max-width: 1450px) {
+    .floating-banner {
+        display: none !important;
+    }
+}
+
+/* 2. Ép sát vào mép ngoài của Container khi màn hình to (Rộng > 1450px) */
+@media (min-width: 1451px) {
+    .banner-left {
+        right: 50%; /* Neo mốc ở giữa màn hình, đẩy lùi về bên TRÁI */
+        margin-right: 675px; /* Căn chuẩn: Nửa container (1320/2=660px) + 15px lề */
+        left: auto !important;
+    }
+
+    .banner-right {
+        left: 50%; /* Neo mốc ở giữa màn hình, đẩy tới về bên PHẢI */
+        margin-left: 675px; 
+        right: auto !important;
+    }
+}
