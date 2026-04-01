@@ -4,13 +4,13 @@ const menuData = [
     { name: "Laptop Gaming", icon: "bi-headset", target: "#megamenu-laptop-gaming" },
     { name: "Main, CPU, VGA", icon: "bi-cpu", target: "#megamenu-linh-kien" },
     { name: "Case, Nguồn, Tản", icon: "bi-pc-display-horizontal", target: "#megamenu-tan-nhiet" },
-    { name: "Ổ cứng, RAM, Thẻ nhớ", icon: "bi-memory", target: "#megamenu-luu-tru" },
-    { name: "Loa, Micro, Webcam", icon: "bi-speakers", target: "#megamenu-am-thanh" },
+    { name: "Ổ cứng, RAM", icon: "bi-memory", target: "#megamenu-luu-tru" },
+    { name: "Loa, Micro, Webcam", icon: "bi-speaker", target: "#megamenu-am-thanh" },
     { name: "Màn hình", icon: "bi-display", target: "#megamenu-man-hinh" },
     { name: "Bàn phím", icon: "bi-keyboard", target: "#megamenu-ban-phim" },
     { name: "Chuột + Lót chuột", icon: "bi-mouse3", target: "#megamenu-chuot" },
-    { name: "Tai nghe", icon: "bi-headset-mic", target: "#megamenu-tai-nghe" },
-    { name: "Ghế - Bàn", icon: "bi-armchair", target: "#megamenu-ghe-ban" },
+    { name: "Tai nghe", icon: "bi bi-headphones", target: "#megamenu-tai-nghe" },
+    { name: "Ghế - Bàn", icon: "bi-house", target: "#megamenu-ghe-ban" },
     { name: "Phần mềm, mạng", icon: "bi-box-seam", target: "#megamenu-phan-mem" },
     { name: "Handheld, Console", icon: "bi-controller", target: "#megamenu-game-console" },
     { name: "Phụ kiện", icon: "bi-plug-fill", target: "#megamenu-phu-kien" },
@@ -22,91 +22,81 @@ const menuData = [
     {
         title: "PC THEO GIÁ",
         links: [
-            "PC DƯỚI 30 TRIỆU",
-            "PC TỪ 30 - 50 TRIỆU",
-            "PC TỪ 50 - 70 TRIỆU",
-            "PC TỪ 70 - 100 TRIỆU",
-            "PC TỪ 100 - 200 TRIỆU",
-            "PC TRÊN 200 TRIỆU"
+            { label: "PC DƯỚI 30 TRIỆU", url: "category.html?category=Desktop&maxPrice=30000000" },
+            { label: "PC TỪ 30 - 50 TRIỆU", url: "category.html?category=Desktop&minPrice=30000000&maxPrice=50000000" },
+            { label: "PC TỪ 50 - 70 TRIỆU", url: "category.html?category=Desktop&minPrice=50000000&maxPrice=70000000" },
+            { label: "PC TỪ 70 - 100 TRIỆU", url: "category.html?category=Desktop&minPrice=70000000&maxPrice=100000000" },
+            { label: "PC TỪ 100 - 200 TRIỆU", url: "category.html?category=Desktop&minPrice=100000000&maxPrice=200000000" },
+            { label: "PC TRÊN 200 TRIỆU", url: "category.html?category=Desktop&minPrice=200000000" }
         ]
     },
     {
         title: "PC RTX 50 Series",
         links: [
-            "PC RTX 5090",
-            "PC RTX 5080",
-            "PC RTX 5070Ti",
-            "PC RTX 5070",
-            "PC RTX 5060Ti"
+            { label: "PC RTX 5090", url: "category.html?name=PC RTX 5090" },
+            { label: "PC RTX 5080", url: "category.html?name=PC RTX 5080" },
+            { label: "PC RTX 5070Ti", url: "category.html?name=PC RTX 5070Ti" },
+            { label: "PC RTX 5070", url: "category.html?name=PC RTX 5070" },
+            { label: "PC RTX 5060Ti", url: "category.html?name=PC RTX 5060Ti" }
         ]
     },
     {
         title: "PC theo cấu hình VGA",
         links: [
-            "PC RTX 5060 (HOT)",
-            "PC RTX 5050",
-            "PC RTX 3060 (HOT)",
-            "PC RTX 3050"
-        ]
-    },
-    {
-        title: "PC theo cấu hình VGA", // Cột VGA thứ 2 trong ảnh
-        links: [
-            "PC RTX 5060Ti",
-            "PC RTX 5070",
-            "PC RTX 5070Ti",
-            "PC RTX 5080",
-            "PC RTX 5090"
+            { label: "PC RTX 5060 (HOT)", url: "category.html?name=PC RTX 5060" },
+            { label: "PC RTX 5050", url: "category.html?name=PC RTX 5050" },
+            { label: "PC RTX 3060 (HOT)", url: "category.html?name=PC RTX 3060" },
+            { label: "PC RTX 3050", url: "category.html?name=PC RTX 3050" }
         ]
     },
     {
         title: "PC khuyến mãi KHỦNG",
         links: [
-            "PC I7 TẶNG MÀN 240HZ",
-            "GVN x MSI - Tặng màn OLED",
-            "GVN x ASUS - MAX SETTING"
+            { label: "PC I7 TẶNG MÀN 240HZ", url: "category.html?name=I7" },
+            { label: "GVN x MSI - Tặng màn OLED", url: "category.html?name=MSI" },
+            { label: "GVN x ASUS - MAX SETTING", url: "category.html?name=ASUS" }
         ]
     },
     {
         title: "PC theo CPU AMD",
         links: [
-            "PC AMD R3",
-            "PC AMD R5 (HOT)",
-            "PC AMD R7",
-            "PC AMD R9"
+            { label: "PC AMD R3", url: "category.html?name=AMD R3" },
+            { label: "PC AMD R5 (HOT)", url: "category.html?name=AMD R5" },
+            { label: "PC AMD R7", url: "category.html?name=AMD R7" },
+            { label: "PC AMD R9", url: "category.html?name=AMD R9" }
         ]
     },
     {
         title: "PC theo CPU Intel",
         links: [
-            "PC Core i3",
-            "PC Core i5",
-            "PC Core i7 (HOT)",
-            "PC Core i9"
+            { label: "PC Core i3", url: "category.html?name=Core i3" },
+            { label: "PC Core i5", url: "category.html?name=Core i5" },
+            { label: "PC Core i7 (HOT)", url: "category.html?name=Core i7" },
+            { label: "PC Core i9", url: "category.html?name=Core i9" }
         ]
     },
     {
-        title: "PC theo CPU Intel", // Dòng Ultra mới
+        title: "PC theo CPU Ultra",
         links: [
-            "PC Ultra 5",
-            "PC Ultra 7",
-            "PC Ultra 9"
+            { label: "PC Ultra 5", url: "category.html?name=Ultra 5" },
+            { label: "PC Ultra 7", url: "category.html?name=Ultra 7" },
+            { label: "PC Ultra 9", url: "category.html?name=Ultra 9" }
         ]
     },
     {
         title: "PC Văn phòng",
         links: [
-            "Homework Athlon - Giá chỉ 3.990k",
-            "Homework R3 - Giá chỉ 5.690k",
-            "Homework R5 - Giá chỉ 5.690k",
-            "Homework I5 - Giá chỉ 5.690k"
+            { label: "Homework Athlon - Giá chỉ 3.990k", url: "category.html?name=Athlon" },
+            { label: "Homework R3 - Giá chỉ 5.690k", url: "category.html?name=Homework R3" },
+            { label: "Homework R5 - Giá chỉ 5.690k", url: "category.html?name=Homework R5" },
+            { label: "Homework I5 - Giá chỉ 5.690k", url: "category.html?name=Homework I5" }
         ]
     },
     {
         title: "Phần mềm bản quyền",
         links: [
-            "Window bản quyền - Chỉ từ 2.990K",
-            "Office 365 bản quyền - Chỉ từ 990K"
+            { label: "Window bản quyền - Chỉ từ 2.990K", url: "category.html?name=Windows" },
+            { label: "Office 365 bản quyền - Chỉ từ 990K", url: "category.html?name=Office" }
         ]
     }
 ],
@@ -114,63 +104,63 @@ const menuData = [
     {
         title: "LAPTOP THEO NHU CẦU",
         links: [
-            "Laptop Gaming (HOT)",
-            "Laptop Văn Phòng",
-            "Laptop Đồ Họa",
-            "Laptop Mỏng Nhẹ",
-            "Laptop AI (NEW)",
-            "Laptop Cảm Ứng",
-            "Laptop Sinh Viên"
+            { label: "Laptop Gaming (HOT)", url: "category.html?category=Laptop&name=Gaming" },
+            { label: "Laptop Văn Phòng", url: "category.html?category=Laptop&name=Văn Phòng" },
+            { label: "Laptop Đồ Họa", url: "category.html?category=Laptop&name=Đồ Họa" },
+            { label: "Laptop Mỏng Nhẹ", url: "category.html?category=Laptop&name=Mỏng Nhẹ" },
+            { label: "Laptop AI (NEW)", url: "category.html?category=Laptop&name=AI" },
+            { label: "Laptop Cảm Ứng", url: "category.html?category=Laptop&name=Cảm Ứng" },
+            { label: "Laptop Sinh Viên", url: "category.html?category=Laptop&name=Sinh Viên" }
         ]
     },
     {
         title: "LAPTOP GAMING",
         links: [
-            "Laptop RTX 40 Series",
-            "Laptop RTX 30 Series",
-            "Laptop Gaming Intel",
-            "Laptop Gaming AMD"
+            { label: "Laptop RTX 40 Series", url: "category.html?category=Laptop&name=RTX 40" },
+            { label: "Laptop RTX 30 Series", url: "category.html?category=Laptop&name=RTX 30" },
+            { label: "Laptop Gaming Intel", url: "category.html?category=Laptop&name=Intel" },
+            { label: "Laptop Gaming AMD", url: "category.html?category=Laptop&name=AMD" }
         ]
     },
     {
         title: "LAPTOP THEO GIÁ",
         links: [
-            "Dưới 15 Triệu",
-            "Từ 15 - 20 Triệu",
-            "Từ 20 - 25 Triệu",
-            "Từ 25 - 30 Triệu",
-            "Trên 30 Triệu"
+            { label: "Dưới 15 Triệu", url: "category.html?category=Laptop&maxPrice=15000000" },
+            { label: "Từ 15 - 20 Triệu", url: "category.html?category=Laptop&minPrice=15000000&maxPrice=20000000" },
+            { label: "Từ 20 - 25 Triệu", url: "category.html?category=Laptop&minPrice=20000000&maxPrice=25000000" },
+            { label: "Từ 25 - 30 Triệu", url: "category.html?category=Laptop&minPrice=25000000&maxPrice=30000000" },
+            { label: "Trên 30 Triệu", url: "category.html?category=Laptop&minPrice=30000000" }
         ]
     },
     {
         title: "THƯƠNG HIỆU LAPTOP",
         links: [
-            "Laptop ASUS",
-            "Laptop MSI",
-            "Laptop ACER",
-            "Laptop GIGABYTE",
-            "Laptop LENOVO",
-            "Laptop HP",
-            "Laptop DELL"
+            { label: "Laptop ASUS", url: "category.html?name=ASUS" },
+            { label: "Laptop MSI", url: "category.html?name=MSI" },
+            { label: "Laptop ACER", url: "category.html?name=ACER" },
+            { label: "Laptop GIGABYTE", url: "category.html?name=GIGABYTE" },
+            { label: "Laptop LENOVO", url: "category.html?name=LENOVO" },
+            { label: "Laptop HP", url: "category.html?name=HP" },
+            { label: "Laptop DELL", url: "category.html?name=DELL" }
         ]
     },
     {
         title: "APPLE (MACBOOK)",
         links: [
-            "Macbook Air M1",
-            "Macbook Air M2",
-            "Macbook Air M3",
-            "Macbook Pro M3 Series"
+            { label: "Macbook Air M1", url: "category.html?name=Macbook Air M1" },
+            { label: "Macbook Air M2", url: "category.html?name=Macbook Air M2" },
+            { label: "Macbook Air M3", url: "category.html?name=Macbook Air M3" },
+            { label: "Macbook Pro M3 Series", url: "category.html?name=Macbook Pro M3" }
         ]
     },
     {
         title: "LINH KIỆN LAPTOP",
         links: [
-            "RAM Laptop",
-            "SSD Laptop",
-            "Sạc Laptop",
-            "Balo / Túi chống sốc",
-            "Giá đỡ Laptop / Đế tản nhiệt"
+            { label: "RAM Laptop", url: "category.html?name=RAM Laptop" },
+            { label: "SSD Laptop", url: "category.html?name=SSD Laptop" },
+            { label: "Sạc Laptop", url: "category.html?name=Sạc Laptop" },
+            { label: "Balo / Túi chống sốc", url: "category.html?name=Balo" },
+            { label: "Giá đỡ Laptop / Đế tản nhiệt", url: "category.html?name=Giá đỡ Laptop" }
         ]
     }
 ],
@@ -178,94 +168,94 @@ const menuData = [
     {
         title: "Thương hiệu",
         links: [
-            "ACER / PREDATOR",
-            "ASUS / ROG",
-            "MSI",
-            "LENOVO",
-            "DELL",
-            "GIGABYTE / AORUS",
-            "HP"
+            { label: "ACER / PREDATOR", url: "category.html?name=ACER" },
+            { label: "ASUS / ROG", url: "category.html?name=ASUS" },
+            { label: "MSI", url: "category.html?name=MSI" },
+            { label: "LENOVO", url: "category.html?name=LENOVO" },
+            { label: "DELL", url: "category.html?name=DELL" },
+            { label: "GIGABYTE / AORUS", url: "category.html?name=GIGABYTE" },
+            { label: "HP", url: "category.html?name=HP" }
         ]
     },
     {
         title: "Giá bán",
         links: [
-            "Dưới 20 triệu",
-            "Từ 20 đến 25 triệu",
-            "Từ 25 đến 30 triệu",
-            "Trên 30 triệu",
-            "Gaming RTX 50 Series"
+            { label: "Dưới 20 triệu", url: "category.html?maxPrice=20000000" },
+            { label: "Từ 20 đến 25 triệu", url: "category.html?minPrice=20000000&maxPrice=25000000" },
+            { label: "Từ 25 đến 30 triệu", url: "category.html?minPrice=25000000&maxPrice=30000000" },
+            { label: "Trên 30 triệu", url: "category.html?minPrice=30000000" },
+            { label: "Gaming RTX 50 Series", url: "category.html?name=RTX 50" }
         ]
     },
     {
         title: "ACER | PREDATOR",
         links: [
-            "Nitro ProPanel Series",
-            "Nitro Series",
-            "Aspire Series",
-            "Predator Series",
-            "ACER RTX 50 Series"
+            { label: "Nitro ProPanel Series", url: "category.html?name=Nitro" },
+            { label: "Nitro Series", url: "category.html?name=Nitro" },
+            { label: "Aspire Series", url: "category.html?name=Aspire" },
+            { label: "Predator Series", url: "category.html?name=Predator" },
+            { label: "ACER RTX 50 Series", url: "category.html?name=ACER RTX 50" }
         ]
     },
     {
         title: "ASUS | ROG Gaming",
         links: [
-            "ROG Series",
-            "TUF Series",
-            "Zephyrus Series",
-            "ASUS RTX 50 Series"
+            { label: "ROG Series", url: "category.html?name=ROG" },
+            { label: "TUF Series", url: "category.html?name=TUF" },
+            { label: "Zephyrus Series", url: "category.html?name=Zephyrus" },
+            { label: "ASUS RTX 50 Series", url: "category.html?name=ASUS RTX 50" }
         ]
     },
     {
         title: "MSI Gaming",
         links: [
-            "Titan GT Series",
-            "Stealth GS Series",
-            "Raider GE Series",
-            "Vector GP Series",
-            "Crosshair / Pulse GL Series",
-            "Sword / Katana GF66 Series",
-            "Cyborg / Thin GF Series",
-            "MSI RTX 50 Series"
+            { label: "Titan GT Series", url: "category.html?name=Titan" },
+            { label: "Stealth GS Series", url: "category.html?name=Stealth" },
+            { label: "Raider GE Series", url: "category.html?name=Raider" },
+            { label: "Vector GP Series", url: "category.html?name=Vector" },
+            { label: "Crosshair / Pulse GL Series", url: "category.html?name=Crosshair" },
+            { label: "Sword / Katana GF66 Series", url: "category.html?name=Sword" },
+            { label: "Cyborg / Thin GF Series", url: "category.html?name=Cyborg" },
+            { label: "MSI RTX 50 Series", url: "category.html?name=MSI RTX 50" }
         ]
     },
     {
         title: "LENOVO Gaming",
         links: [
-            "Legion Gaming",
-            "LOQ series",
-            "RTX 50 Series"
+            { label: "Legion Gaming", url: "category.html?name=Legion" },
+            { label: "LOQ series", url: "category.html?name=LOQ" },
+            { label: "RTX 50 Series", url: "category.html?name=RTX 50" }
         ]
     },
     {
         title: "GIGABYTE Gaming",
         links: [
-            "Gaming Gigabyte",
-            "GIGABYTE RTX 50 Series"
+            { label: "Gaming Gigabyte", url: "category.html?name=GIGABYTE" },
+            { label: "GIGABYTE RTX 50 Series", url: "category.html?name=GIGABYTE RTX 50" }
         ]
     },
     {
         title: "HP Gaming",
         links: [
-            "HP Victus",
-            "HP Omen",
-            "HP RTX 50 Series"
+            { label: "HP Victus", url: "category.html?name=Victus" },
+            { label: "HP Omen", url: "category.html?name=Omen" },
+            { label: "HP RTX 50 Series", url: "category.html?name=HP RTX 50" }
         ]
     },
     {
         title: "Cấu hình",
         links: [
-            "RTX 50 Series",
-            "CPU Core Ultra",
-            "CPU AMD"
+            { label: "RTX 50 Series", url: "category.html?name=RTX 50" },
+            { label: "CPU Core Ultra", url: "category.html?name=Core Ultra" },
+            { label: "CPU AMD", url: "category.html?name=AMD" }
         ]
     },
     {
         title: "Linh - Phụ kiện Laptop",
         links: [
-            "Ram laptop",
-            "SSD laptop",
-            "Ổ cứng di động"
+            { label: "Ram laptop", url: "category.html?name=RAM Laptop" },
+            { label: "SSD laptop", url: "category.html?name=SSD Laptop" },
+            { label: "Ổ cứng di động", url: "category.html?name=Ổ cứng di động" }
         ]
     }
 ],
@@ -273,82 +263,82 @@ const menuData = [
     {
         title: "VGA RTX 50 SERIES",
         links: [
-            "RTX 5090",
-            "RTX 5080",
-            "RTX 5070Ti",
-            "RTX 5070",
-            "RTX 5060Ti",
-            "RTX 5060"
+            { label: "RTX 5090", url: "category.html?name=RTX 5090" },
+            { label: "RTX 5080", url: "category.html?name=RTX 5080" },
+            { label: "RTX 5070Ti", url: "category.html?name=RTX 5070Ti" },
+            { label: "RTX 5070", url: "category.html?name=RTX 5070" },
+            { label: "RTX 5060Ti", url: "category.html?name=RTX 5060Ti" },
+            { label: "RTX 5060", url: "category.html?name=RTX 5060" }
         ]
     },
     {
         title: "VGA (Trên 12 GB VRAM)",
         links: [
-            "RTX 4070 SUPER (12GB)",
-            "RTX 4070Ti SUPER (16GB)",
-            "RTX 4080 SUPER (16GB)",
-            "RTX 4090 SUPER (24GB)"
+            { label: "RTX 4070 SUPER (12GB)", url: "category.html?name=RTX 4070 SUPER" },
+            { label: "RTX 4070Ti SUPER (16GB)", url: "category.html?name=RTX 4070Ti SUPER" },
+            { label: "RTX 4080 SUPER (16GB)", url: "category.html?name=RTX 4080 SUPER" },
+            { label: "RTX 4090 SUPER (24GB)", url: "category.html?name=RTX 4090 SUPER" }
         ]
     },
     {
         title: "VGA (Dưới 12 GB VRAM)",
         links: [
-            "RTX 4060Ti (8 - 16GB)",
-            "RTX 4060 (8GB)",
-            "RTX 3060 (12GB)",
-            "RTX 3050 (6 - 8GB)",
-            "GTX 1650 (4GB)",
-            "GT 710 / GT 1030 (2-4GB)"
+            { label: "RTX 4060Ti (8 - 16GB)", url: "category.html?name=RTX 4060Ti" },
+            { label: "RTX 4060 (8GB)", url: "category.html?name=RTX 4060" },
+            { label: "RTX 3060 (12GB)", url: "category.html?name=RTX 3060" },
+            { label: "RTX 3050 (6 - 8GB)", url: "category.html?name=RTX 3050" },
+            { label: "GTX 1650 (4GB)", url: "category.html?name=GTX 1650" },
+            { label: "GT 710 / GT 1030 (2-4GB)", url: "category.html?name=GT 710" }
         ]
     },
     {
         title: "VGA - Card màn hình",
         links: [
-            "NVIDIA Quadro",
-            "AMD Radeon"
+            { label: "NVIDIA Quadro", url: "category.html?name=NVIDIA Quadro" },
+            { label: "AMD Radeon", url: "category.html?name=AMD Radeon" }
         ]
     },
     {
         title: "Bo mạch chủ Intel",
         links: [
-            "Z890 (Mới)",
-            "Z790",
-            "B760",
-            "H610",
-            "X299X",
-            "Xem tất cả"
+            { label: "Z890 (Mới)", url: "category.html?name=Z890" },
+            { label: "Z790", url: "category.html?name=Z790" },
+            { label: "B760", url: "category.html?name=B760" },
+            { label: "H610", url: "category.html?name=H610" },
+            { label: "X299X", url: "category.html?name=X299X" },
+            { label: "Xem tất cả", url: "category.html?name=Motherboard Intel" }
         ]
     },
     {
         title: "Bo mạch chủ AMD",
         links: [
-            "AMD X870 (Mới)",
-            "AMD X670",
-            "AMD X570",
-            "AMD B650 (Mới)",
-            "AMD B550",
-            "AMD A320",
-            "AMD TRX40"
+            { label: "AMD X870 (Mới)", url: "category.html?name=X870" },
+            { label: "AMD X670", url: "category.html?name=X670" },
+            { label: "AMD X570", url: "category.html?name=X570" },
+            { label: "AMD B650 (Mới)", url: "category.html?name=B650" },
+            { label: "AMD B550", url: "category.html?name=B550" },
+            { label: "AMD A320", url: "category.html?name=A320" },
+            { label: "AMD TRX40", url: "category.html?name=TRX40" }
         ]
     },
     {
         title: "CPU - Bộ vi xử lý Intel",
         links: [
-            "CPU Intel Core Ultra Series 2 (Mới)",
-            "CPU Intel 9",
-            "CPU Intel 7",
-            "CPU Intel 5",
-            "CPU Intel 3"
+            { label: "CPU Intel Core Ultra Series 2 (Mới)", url: "category.html?name=Core Ultra" },
+            { label: "CPU Intel 9", url: "category.html?name=Intel 9" },
+            { label: "CPU Intel 7", url: "category.html?name=Intel 7" },
+            { label: "CPU Intel 5", url: "category.html?name=Intel 5" },
+            { label: "CPU Intel 3", url: "category.html?name=Intel 3" }
         ]
     },
     {
         title: "CPU - Bộ vi xử lý AMD",
         links: [
-            "CPU AMD Athlon",
-            "CPU AMD R3",
-            "CPU AMD R5",
-            "CPU AMD R7",
-            "CPU AMD R9"
+            { label: "CPU AMD Athlon", url: "category.html?name=Athlon" },
+            { label: "CPU AMD R3", url: "category.html?name=R3" },
+            { label: "CPU AMD R5", url: "category.html?name=R5" },
+            { label: "CPU AMD R7", url: "category.html?name=R7" },
+            { label: "CPU AMD R9", url: "category.html?name=R9" }
         ]
     }
 ],
@@ -356,124 +346,152 @@ const menuData = [
     {
         title: "VỎ MÁY - CASE",
         links: [
-            "Case MSI",
-            "Case ASUS / ROG",
-            "Case GIGABYTE / AORUS",
-            "Case LIAN-LI",
-            "Case CORSAIR",
-            "Case DEEPCOOL",
-            "Case NZXT",
-            "Case MIK",
-            "Case DEEPCOOL",
-            "Case XIGMATEK"
+            { label: "Case MSI", url: "category.html?name=Case MSI" },
+            { label: "Case ASUS / ROG", url: "category.html?name=Case ASUS" },
+            { label: "Case GIGABYTE / AORUS", url: "category.html?name=Case GIGABYTE" },
+            { label: "Case LIAN-LI", url: "category.html?name=Case LIAN-LI" },
+            { label: "Case CORSAIR", url: "category.html?name=Case CORSAIR" },
+            { label: "Case DEEPCOOL", url: "category.html?name=Case DEEPCOOL" },
+            { label: "Case NZXT", url: "category.html?name=Case NZXT" },
+            { label: "Case MIK", url: "category.html?name=Case MIK" },
+            { label: "Case XIGMATEK", url: "category.html?name=Case XIGMATEK" }
         ]
     },
     {
         title: "NGUỒN MÁY TÍNH",
         links: [
-            "Nguồn MSI",
-            "Nguồn ASUS / ROG",
-            "Nguồn GIGABYTE",
-            "Nguồn CORSAIR",
-            "Nguồn DEEPCOOL",
-            "Nguồn NZXT",
-            "Nguồn LIAN-LI",
-            "Nguồn MIK",
-            "Nguồn XIGMATEK",
-            "Nguồn JETEK"
+            { label: "Nguồn MSI", url: "category.html?name=Nguồn MSI" },
+            { label: "Nguồn ASUS / ROG", url: "category.html?name=Nguồn ASUS" },
+            { label: "Nguồn GIGABYTE", url: "category.html?name=Nguồn GIGABYTE" },
+            { label: "Nguồn CORSAIR", url: "category.html?name=Nguồn CORSAIR" },
+            { label: "Nguồn DEEPCOOL", url: "category.html?name=Nguồn DEEPCOOL" },
+            { label: "Nguồn NZXT", url: "category.html?name=Nguồn NZXT" },
+            { label: "Nguồn LIAN-LI", url: "category.html?name=Nguồn LIAN-LI" },
+            { label: "Nguồn MIK", url: "category.html?name=Nguồn MIK" },
+            { label: "Nguồn XIGMATEK", url: "category.html?name=Nguồn XIGMATEK" },
+            { label: "Nguồn JETEK", url: "category.html?name=Nguồn JETEK" }
         ]
     },
     {
         title: "TẢN NHIỆT NƯỚC AIO",
         links: [
-            "Tản AIO MSI",
-            "Tản AIO ASUS",
-            "Tản AIO GIGABYTE",
-            "Tản AIO LIAN-LI",
-            "Tản AIO NZXT",
-            "Tản AIO CORSAIR",
-            "Tản AIO DEEPCOOL",
-            "Tản AIO COOLER MASTER"
+            { label: "Tản AIO MSI", url: "category.html?name=Tản AIO MSI" },
+            { label: "Tản AIO ASUS", url: "category.html?name=Tản AIO ASUS" },
+            { label: "Tản AIO GIGABYTE", url: "category.html?name=Tản AIO GIGABYTE" },
+            { label: "Tản AIO LIAN-LI", url: "category.html?name=Tản AIO LIAN-LI" },
+            { label: "Tản AIO NZXT", url: "category.html?name=Tản AIO NZXT" },
+            { label: "Tản AIO CORSAIR", url: "category.html?name=Tản AIO CORSAIR" },
+            { label: "Tản AIO DEEPCOOL", url: "category.html?name=Tản AIO DEEPCOOL" },
+            { label: "Tản AIO COOLER MASTER", url: "category.html?name=Tản AIO COOLER MASTER" }
         ]
     },
     {
         title: "TẢN NHIỆT KHÍ",
         links: [
-            "Tản khí Noctua",
-            "Tản khí Deepcool",
-            "Tản khí Cooler Master",
-            "Tản khí Thermalright",
-            "Tản khí ID-COOLING"
+            { label: "Tản khí Noctua", url: "category.html?name=Noctua" },
+            { label: "Tản khí Deepcool", url: "category.html?name=Deepcool" },
+            { label: "Tản khí Cooler Master", url: "category.html?name=Cooler Master" },
+            { label: "Tản khí Thermalright", url: "category.html?name=Thermalright" },
+            { label: "Tản khí ID-COOLING", url: "category.html?name=ID-COOLING" }
         ]
     },
     {
         title: "QUẠT TẢN NHIỆT (FAN)",
         links: [
-            "Fan Case LIAN-LI",
-            "Fan Case CORSAIR",
-            "Fan Case NZXT",
-            "Fan Case DEEPCOOL",
-            "Fan Case MSI",
-            "Fan Case ASUS"
+            { label: "Fan Case LIAN-LI", url: "category.html?name=Fan LIAN-LI" },
+            { label: "Fan Case CORSAIR", url: "category.html?name=Fan CORSAIR" },
+            { label: "Fan Case NZXT", url: "category.html?name=Fan NZXT" },
+            { label: "Fan Case DEEPCOOL", url: "category.html?name=Fan DEEPCOOL" },
+            { label: "Fan Case MSI", url: "category.html?name=Fan MSI" },
+            { label: "Fan Case ASUS", url: "category.html?name=Fan ASUS" }
         ]
     },
     {
         title: "PHỤ KIỆN TẢN NHIỆT",
         links: [
-            "Keo tản nhiệt",
-            "Hub Fan / Controller",
-            "Dây Led RGB",
-            "Giá đỡ VGA"
+            { label: "Keo tản nhiệt", url: "category.html?name=Keo tản nhiệt" },
+            { label: "Hub Fan / Controller", url: "category.html?name=Hub Fan" },
+            { label: "Dây Led RGB", url: "category.html?name=Led RGB" },
+            { label: "Giá đỡ VGA", url: "category.html?name=Giá đỡ VGA" }
         ]
     }
 ],
 "luu-tru": [
     {
         title: "Dung lượng RAM",
-        links: ["8 GB", "16 GB", "32 GB", "64 GB", "Xem tất cả"]
+        links: [
+            { label: "8 GB", url: "category.html?name=RAM 8GB" },
+            { label: "16 GB", url: "category.html?name=RAM 16GB" },
+            { label: "32 GB", url: "category.html?name=RAM 32GB" },
+            { label: "64 GB", url: "category.html?name=RAM 64GB" },
+            { label: "Xem tất cả", url: "category.html?name=RAM" }
+        ]
     },
     {
         title: "Loại RAM",
-        links: ["DDR4", "DDR5", "Xem tất cả"]
+        links: [
+            { label: "DDR4", url: "category.html?name=DDR4" },
+            { label: "DDR5", url: "category.html?name=DDR5" },
+            { label: "Xem tất cả", url: "category.html?name=RAM" }
+        ]
     },
     {
         title: "Hãng RAM",
-        links: ["Corsair", "Kingston", "G.Skill", "PNY", "Xem tất cả"]
+        links: [
+            { label: "Corsair", url: "category.html?name=Corsair" },
+            { label: "Kingston", url: "category.html?name=Kingston" },
+            { label: "G.Skill", url: "category.html?name=G.Skill" },
+            { label: "PNY", url: "category.html?name=PNY" },
+            { label: "Xem tất cả", url: "category.html?name=RAM" }
+        ]
     },
     {
         title: "Dung lượng HDD",
-        links: ["HDD 1 TB", "HDD 2 TB", "HDD 4 TB - 6 TB", "HDD trên 8 TB", "Xem tất cả"]
+        links: [
+            { label: "HDD 1 TB", url: "category.html?name=HDD 1TB" },
+            { label: "HDD 2 TB", url: "category.html?name=HDD 2TB" },
+            { label: "HDD 4 TB - 6 TB", url: "category.html?name=HDD 4TB" },
+            { label: "HDD trên 8 TB", url: "category.html?name=HDD 8TB" },
+            { label: "Xem tất cả", url: "category.html?name=HDD" }
+        ]
     },
     {
         title: "Hãng HDD",
-        links: ["Western Digital", "Seagate", "Toshiba", "Xem tất cả"]
+        links: [
+            { label: "Western Digital", url: "category.html?name=Western Digital" },
+            { label: "Seagate", url: "category.html?name=Seagate" },
+            { label: "Toshiba", url: "category.html?name=Toshiba" },
+            { label: "Xem tất cả", url: "category.html?name=HDD" }
+        ]
     },
     {
         title: "Dung lượng SSD",
         links: [
-            "120GB - 128GB",
-            "250GB - 256GB",
-            "480GB - 512GB",
-            "960GB - 1TB",
-            "2TB",
-            "Trên 2TB",
-            "Xem tất cả"
+            { label: "120GB - 128GB", url: "category.html?name=SSD 128GB" },
+            { label: "250GB - 256GB", url: "category.html?name=SSD 256GB" },
+            { label: "480GB - 512GB", url: "category.html?name=SSD 512GB" },
+            { label: "960GB - 1TB", url: "category.html?name=SSD 1TB" },
+            { label: "2TB", url: "category.html?name=SSD 2TB" },
+            { label: "Trên 2TB", url: "category.html?name=SSD 2TB+" },
+            { label: "Xem tất cả", url: "category.html?name=SSD" }
         ]
     },
     {
         title: "Hãng SSD",
         links: [
-            "Samsung",
-            "Western Digital",
-            "Kingston",
-            "Corsair",
-            "PNY",
-            "Xem tất cả"
+            { label: "Samsung", url: "category.html?name=Samsung" },
+            { label: "Western Digital", url: "category.html?name=Western Digital" },
+            { label: "Kingston", url: "category.html?name=Kingston" },
+            { label: "Corsair", url: "category.html?name=Corsair" },
+            { label: "PNY", url: "category.html?name=PNY" },
+            { label: "Xem tất cả", url: "category.html?name=SSD" }
         ]
     },
     {
         title: "Thẻ nhớ / USB",
-        links: ["Sandisk"]
+        links: [
+            { label: "Sandisk", url: "category.html?name=Sandisk" }
+        ]
     },
     {
         title: "Ổ cứng di động",
@@ -484,56 +502,56 @@ const menuData = [
     {
         title: "LOA MÁY TÍNH",
         links: [
-            "Loa Razer",
-            "Loa Logitech",
-            "Loa Soundmax",
-            "Loa Microlab",
-            "Loa Creative",
-            "Loa Edifier",
-            "Xem tất cả"
+            { label: "Loa Razer", url: "category.html?name=Razer Loa" },
+            { label: "Loa Logitech", url: "category.html?name=Logitech Loa" },
+            { label: "Loa Soundmax", url: "category.html?name=Soundmax" },
+            { label: "Loa Microlab", url: "category.html?name=Microlab" },
+            { label: "Loa Creative", url: "category.html?name=Creative" },
+            { label: "Loa Edifier", url: "category.html?name=Edifier" },
+            { label: "Xem tất cả", url: "category.html?name=Loa" }
         ]
     },
     {
         title: "LOA BLUETOOTH",
         links: [
-            "Loa Marshall",
-            "Loa JBL",
-            "Loa Sony",
-            "Loa Bose",
-            "Loa Harman Kardon",
-            "Xem tất cả"
+            { label: "Loa Marshall", url: "category.html?name=Marshall" },
+            { label: "Loa JBL", url: "category.html?name=JBL" },
+            { label: "Loa Sony", url: "category.html?name=Sony" },
+            { label: "Loa Bose", url: "category.html?name=Bose" },
+            { label: "Loa Harman Kardon", url: "category.html?name=Harman Kardon" },
+            { label: "Xem tất cả", url: "category.html?name=Loa Bluetooth" }
         ]
     },
     {
         title: "MICROPHONE",
         links: [
-            "Micro Razer",
-            "Micro HyperX",
-            "Micro Elgato",
-            "Micro ASUS / ROG",
-            "Micro Blue (Logitech G)",
-            "Xem tất cả"
+            { label: "Micro Razer", url: "category.html?name=Razer Micro" },
+            { label: "Micro HyperX", url: "category.html?name=HyperX" },
+            { label: "Micro Elgato", url: "category.html?name=Elgato" },
+            { label: "Micro ASUS / ROG", url: "category.html?name=ASUS Micro" },
+            { label: "Micro Blue (Logitech G)", url: "category.html?name=Blue Micro" },
+            { label: "Xem tất cả", url: "category.html?name=Microphone" }
         ]
     },
     {
         title: "WEBCAM / THIẾT BỊ STREAM",
         links: [
-            "Webcam Razer",
-            "Webcam Logitech",
-            "Webcam Elgato",
-            "Thiết bị Stream Elgato",
-            "Capture Card",
-            "Đèn Stream / Phụ kiện",
-            "Xem tất cả"
+            { label: "Webcam Razer", url: "category.html?name=Razer Webcam" },
+            { label: "Webcam Logitech", url: "category.html?name=Logitech Webcam" },
+            { label: "Webcam Elgato", url: "category.html?name=Elgato Webcam" },
+            { label: "Thiết bị Stream Elgato", url: "category.html?name=Elgato Stream" },
+            { label: "Capture Card", url: "category.html?name=Capture Card" },
+            { label: "Đèn Stream / Phụ kiện", url: "category.html?name=Stream Light" },
+            { label: "Xem tất cả", url: "category.html?name=Webcam" }
         ]
     },
     {
         title: "MÁY CHIẾU / PHỤ KIỆN",
         links: [
-            "Máy chiếu ASUS",
-            "Máy chiếu Samsung",
-            "Màn chiếu",
-            "Giá treo máy chiếu"
+            { label: "Máy chiếu ASUS", url: "category.html?name=ASUS Projector" },
+            { label: "Máy chiếu Samsung", url: "category.html?name=Samsung Projector" },
+            { label: "Màn chiếu", url: "category.html?name=Màn chiếu" },
+            { label: "Giá treo máy chiếu", url: "category.html?name=Giá treo" }
         ]
     }
 ],
@@ -541,62 +559,62 @@ const menuData = [
     {
         title: "Thương hiệu màn hình",
         links: [
-            "Màn hình ASUS",
-            "Màn hình MSI",
-            "Màn hình GIGABYTE",
-            "Màn hình SAMSUNG",
-            "Màn hình LG",
-            "Màn hình DELL",
-            "Màn hình VIEWSONIC",
-            "Màn hình AOC",
-            "Màn hình ACER"
+            { label: "Màn hình ASUS", url: "category.html?name=ASUS Monitor" },
+            { label: "Màn hình MSI", url: "category.html?name=MSI Monitor" },
+            { label: "Màn hình GIGABYTE", url: "category.html?name=GIGABYTE Monitor" },
+            { label: "Màn hình SAMSUNG", url: "category.html?name=Samsung Monitor" },
+            { label: "Màn hình LG", url: "category.html?name=LG Monitor" },
+            { label: "Màn hình DELL", url: "category.html?name=Dell Monitor" },
+            { label: "Màn hình VIEWSONIC", url: "category.html?name=Viewsonic Monitor" },
+            { label: "Màn hình AOC", url: "category.html?name=AOC Monitor" },
+            { label: "Màn hình ACER", url: "category.html?name=Acer Monitor" }
         ]
     },
     {
         title: "Độ phân giải màn hình",
         links: [
-            "Màn hình Full HD (1080p)",
-            "Màn hình 2K (1440p)",
-            "Màn hình 4K (2160p)",
-            "Màn hình UltraWide (21:9)"
+            { label: "Màn hình Full HD (1080p)", url: "category.html?name=1080p" },
+            { label: "Màn hình 2K (1440p)", url: "category.html?name=2K" },
+            { label: "Màn hình 4K (2160p)", url: "category.html?name=4K" },
+            { label: "Màn hình UltraWide (21:9)", url: "category.html?name=Ultrawide" }
         ]
     },
     {
         title: "Tần số quét màn hình",
         links: [
-            "Màn hình 60Hz - 75Hz",
-            "Màn hình 100Hz - 144Hz",
-            "Màn hình 165Hz - 180Hz",
-            "Màn hình 240Hz - 360Hz",
-            "Màn hình trên 360Hz"
+            { label: "Màn hình 60Hz - 75Hz", url: "category.html?name=60Hz" },
+            { label: "Màn hình 100Hz - 144Hz", url: "category.html?name=144Hz" },
+            { label: "Màn hình 165Hz - 180Hz", url: "category.html?name=165Hz" },
+            { label: "Màn hình 240Hz - 360Hz", url: "category.html?name=240Hz" },
+            { label: "Màn hình trên 360Hz", url: "category.html?name=360Hz" }
         ]
     },
     {
         title: "Kích thước màn hình",
         links: [
-            "Dưới 24 inch",
-            "Màn hình 24 inch",
-            "Màn hình 27 inch",
-            "Màn hình 32 inch",
-            "Trên 32 inch"
+            { label: "Dưới 24 inch", url: "category.html?name=Monitor 21" },
+            { label: "Màn hình 24 inch", url: "category.html?name=Monitor 24" },
+            { label: "Màn hình 27 inch", url: "category.html?name=Monitor 27" },
+            { label: "Màn hình 32 inch", url: "category.html?name=Monitor 32" },
+            { label: "Trên 32 inch", url: "category.html?name=Monitor 34" }
         ]
     },
     {
         title: "Màn hình chuyên dụng",
         links: [
-            "Màn hình Gaming",
-            "Màn hình Đồ họa (DCI-P3)",
-            "Màn hình Văn phòng",
-            "Màn hình Cong",
-            "Màn hình OLED / QD-OLED"
+            { label: "Màn hình Gaming", url: "category.html?name=Gaming Monitor" },
+            { label: "Màn hình Đồ họa (DCI-P3)", url: "category.html?name=Designer Monitor" },
+            { label: "Màn hình Văn phòng", url: "category.html?name=Office Monitor" },
+            { label: "Màn hình Cong", url: "category.html?name=Curved Monitor" },
+            { label: "Màn hình OLED / QD-OLED", url: "category.html?name=OLED Monitor" }
         ]
     },
     {
         title: "Phụ kiện màn hình",
         links: [
-            "Giá treo màn hình (Arm)",
-            "Dây cáp HDMI / DisplayPort",
-            "Bộ vệ sinh màn hình"
+            { label: "Giá treo màn hình (Arm)", url: "category.html?name=Monitor Stand" },
+            { label: "Dây cáp HDMI / DisplayPort", url: "category.html?name=HDMI Cable" },
+            { label: "Bộ vệ sinh màn hình", url: "category.html?name=Monitor Cleaner" }
         ]
     }
 ],
@@ -604,53 +622,53 @@ const menuData = [
     {
         title: "BÀN PHÍM THEO HÃNG",
         links: [
-            "Bàn phím AKKO",
-            "Bàn phím RAZER",
-            "Bàn phím LOGITECH",
-            "Bàn phím CORSAIR",
-            "Bàn phím ASUS / ROG",
-            "Bàn phím MSI",
-            "Bàn phím STEELSERIES",
-            "Bàn phím DAREU",
-            "Bàn phím E-DRA"
+            { label: "Bàn phím AKKO", url: "category.html?name=AKKO" },
+            { label: "Bàn phím RAZER", url: "category.html?name=Razer Keyboard" },
+            { label: "Bàn phím LOGITECH", url: "category.html?name=Logitech Keyboard" },
+            { label: "Bàn phím CORSAIR", url: "category.html?name=Corsair Keyboard" },
+            { label: "Bàn phím ASUS / ROG", url: "category.html?name=ASUS Keyboard" },
+            { label: "Bàn phím MSI", url: "category.html?name=MSI Keyboard" },
+            { label: "Bàn phím STEELSERIES", url: "category.html?name=Steelseries Keyboard" },
+            { label: "Bàn phím DAREU", url: "category.html?name=Dareu" },
+            { label: "Bàn phím E-DRA", url: "category.html?name=E-DRA" }
         ]
     },
     {
         title: "BÀN PHÍM CƠ CAO CẤP",
         links: [
-            "Bàn phím Leopold",
-            "Bàn phím Filco",
-            "Bàn phím Varmilo",
-            "Bàn phím Realforce",
-            "Bàn phím Keychron"
+            { label: "Bàn phím Leopold", url: "category.html?name=Leopold" },
+            { label: "Bàn phím Filco", url: "category.html?name=Filco" },
+            { label: "Bàn phím Varmilo", url: "category.html?name=Varmilo" },
+            { label: "Bàn phím Realforce", url: "category.html?name=Realforce" },
+            { label: "Bàn phím Keychron", url: "category.html?name=Keychron" }
         ]
     },
     {
         title: "BÀN PHÍM CUSTOM / KIT",
         links: [
-            "Kit bàn phím cơ",
-            "Switch bàn phím",
-            "Keycap (Bộ nút phím)",
-            "Dây cáp xoắn (Coiled Cable)",
-            "Dụng cụ Mod phím (Lube, Film)"
+            { label: "Kit bàn phím cơ", url: "category.html?name=Keyboard Kit" },
+            { label: "Switch bàn phím", url: "category.html?name=Keyboard Switch" },
+            { label: "Keycap (Bộ nút phím)", url: "category.html?name=Keycap" },
+            { label: "Dây cáp xoắn (Coiled Cable)", url: "category.html?name=Coiled Cable" },
+            { label: "Dụng cụ Mod phím (Lube, Film)", url: "category.html?name=Keyboard Lube" }
         ]
     },
     {
         title: "BÀN PHÍM THEO NHU CẦU",
         links: [
-            "Bàn phím Gaming",
-            "Bàn phím Không dây (Wireless)",
-            "Bàn phím Văn phòng",
-            "Bàn phím Giả cơ",
-            "Combo Phím + Chuột"
+            { label: "Bàn phím Gaming", url: "category.html?name=Gaming Keyboard" },
+            { label: "Bàn phím Không dây (Wireless)", url: "category.html?name=Wireless Keyboard" },
+            { label: "Bàn phím Văn phòng", url: "category.html?name=Office Keyboard" },
+            { label: "Bàn phím Giả cơ", url: "category.html?name=Mechanical Keyboard" },
+            { label: "Combo Phím + Chuột", url: "category.html?name=Keyboard Mouse Combo" }
         ]
     },
     {
         title: "KÍCH THƯỚC BÀN PHÍM",
         links: [
-            "Fullsize (104 - 108 phím)",
-            "Tenkeyless (TKL - 80%)",
-            "Mini (60% - 65% - 75%)"
+            { label: "Fullsize (104 - 108 phím)", url: "category.html?name=Fullsize Keyboard" },
+            { label: "Tenkeyless (TKL - 80%)", url: "category.html?name=TKL Keyboard" },
+            { label: "Mini (60% - 65% - 75%)", url: "category.html?name=60% Keyboard" }
         ]
     }
 ],
@@ -658,36 +676,60 @@ const menuData = [
     {
         title: "Thương hiệu chuột",
         links: [
-            "Logitech",
-            "Razer",
-            "Corsair",
-            "Microsoft",
-            "Dare-U",
-            "ASUS",
-            "Steelseries",
-            "Glorious",
-            "Rapoo",
-            "HyperX",
-            "ATK"
+            { label: "Logitech", url: "category.html?name=Logitech Mouse" },
+            { label: "Razer", url: "category.html?name=Chuột Razer" },
+            { label: "Corsair", url: "category.html?name=Corsair Mouse" },
+            { label: "Microsoft", url: "category.html?name=Microsoft Mouse" },
+            { label: "Dare-U", url: "category.html?name=DareU Mouse" },
+            { label: "ASUS", url: "category.html?name=ASUS Mouse" },
+            { label: "Steelseries", url: "category.html?name=Steelseries Mouse" },
+            { label: "Glorious", url: "category.html?name=Glorious" },
+            { label: "Rapoo", url: "category.html?name=Rapoo" },
+            { label: "HyperX", url: "category.html?name=HyperX Mouse" },
+            { label: "ATK", url: "category.html?name=ATK" }
         ]
     },
     {
         title: "Chuột theo giá tiền",
         links: [
-            "Dưới 500 nghìn",
-            "Từ 500 nghìn - 1 triệu",
-            "Từ 1 triệu - 2 triệu",
-            "Trên 2 triệu - 3 triệu",
-            "Trên 3 triệu"
+            { label: "Dưới 500 nghìn", url: "category.html?maxPrice=500000" },
+            { label: "Từ 500 nghìn - 1 triệu", url: "category.html?minPrice=500000&maxPrice=1000000" },
+            { label: "Từ 1 triệu - 2 triệu", url: "category.html?minPrice=1000000&maxPrice=2000000" },
+            { label: "Trên 2 triệu - 3 triệu", url: "category.html?minPrice=2000000&maxPrice=3000000" },
+            { label: "Trên 3 triệu", url: "category.html?minPrice=3000000" }
+        ]
+    },
+    {
+        title: "Loại chuột",
+        links: [
+            { label: "Chuột Gaming", url: "category.html?name=Gaming Mouse" },
+            { label: "Chuột Không dây", url: "category.html?name=Wireless Mouse" },
+            { label: "Chuột có dây", url: "category.html?name=Wired Mouse" }
+        ]
+    },
+    {
+        title: "Cảm biến chuột",
+        links: [
+            { label: "Logitech MX", url: "category.html?name=Logitech MX" },
+            { label: "Razer Focus", url: "category.html?name=Razer Focus" },
+            { label: "Corsair Dark Core", url: "category.html?name=Dark Core" }
+        ]
+    },
+    {
+        title: "Phụ kiện chuột",
+        links: [
+            { label: "Lót chuột (Mousepad)", url: "category.html?name=Mousepad" },
+            { label: "Lót chuột Gaming", url: "category.html?name=Gaming Mousepad" },
+            { label: "Hỗ trợ chuột", url: "category.html?name=Mouse Rest" }
         ]
     },
     {
         title: "Loại Chuột",
         links: [
-            "Chuột chơi game",
-            "Chuột văn phòng",
-            "Logitech Gaming",
-            "Logitech Văn phòng"
+            { label: "Chuột chơi game", url: "category.html?name=Gaming Mouse" },
+            { label: "Chuột văn phòng", url: "category.html?name=Office Mouse" },
+            { label: "Logitech Gaming", url: "category.html?name=Logitech Gaming" },
+            { label: "Logitech Văn phòng", url: "category.html?name=Logitech Office" }
         ]
     },
     {
@@ -724,39 +766,39 @@ const menuData = [
     {
         title: "Thương hiệu tai nghe",
         links: [
-            "ASUS",
-            "HyperX",
-            "Corsair",
-            "Razer",
-            "ONIKUMA",
-            "Steelseries",
-            "Rapoo",
-            "Logitech",
-            "Edifier"
+            { label: "ASUS", url: "category.html?name=ASUS Headset" },
+            { label: "HyperX", url: "category.html?name=HyperX Headset" },
+            { label: "Corsair", url: "category.html?name=Corsair Headset" },
+            { label: "Razer", url: "category.html?name=Razer Headset" },
+            { label: "ONIKUMA", url: "category.html?name=Onikuma" },
+            { label: "Steelseries", url: "category.html?name=Steelseries Headset" },
+            { label: "Rapoo", url: "category.html?name=Rapoo" },
+            { label: "Logitech", url: "category.html?name=Logitech Headset" },
+            { label: "Edifier", url: "category.html?name=Edifier" }
         ]
     },
     {
         title: "Tai nghe theo giá",
         links: [
-            "Tai nghe dưới 1 triệu",
-            "Tai nghe 1 triệu đến 2 triệu",
-            "Tai nghe 2 triệu đến 3 triệu",
-            "Tai nghe 3 triệu đến 4 triệu",
-            "Tai nghe trên 4 triệu"
+            { label: "Tai nghe dưới 1 triệu", url: "category.html?maxPrice=1000000" },
+            { label: "Tai nghe 1 triệu đến 2 triệu", url: "category.html?minPrice=1000000&maxPrice=2000000" },
+            { label: "Tai nghe 2 triệu đến 3 triệu", url: "category.html?minPrice=2000000&maxPrice=3000000" },
+            { label: "Tai nghe 3 triệu đến 4 triệu", url: "category.html?minPrice=3000000&maxPrice=4000000" },
+            { label: "Tai nghe trên 4 triệu", url: "category.html?minPrice=4000000" }
         ]
     },
     {
         title: "Kiểu kết nối",
         links: [
-            "Tai nghe Wireless",
-            "Tai nghe Bluetooth"
+            { label: "Tai nghe Wireless", url: "category.html?name=Wireless Headset" },
+            { label: "Tai nghe Bluetooth", url: "category.html?name=Bluetooth Headset" }
         ]
     },
     {
         title: "Kiểu tai nghe",
         links: [
-            "Tai nghe Over-ear",
-            "Tai nghe Gaming In-ear"
+            { label: "Tai nghe Over-ear", url: "category.html?name=Over-ear Headset" },
+            { label: "Tai nghe Gaming In-ear", url: "category.html?name=In-ear Headset" }
         ]
     }
 ],
@@ -764,51 +806,51 @@ const menuData = [
     {
         title: "Thương hiệu ghế Gaming",
         links: [
-            "Corsair",
-            "Warrior",
-            "E-DRA",
-            "DXRacer",
-            "Cougar",
-            "AKRaing",
-            "Razer"
+            { label: "Corsair", url: "category.html?name=Corsair Chair" },
+            { label: "Warrior", url: "category.html?name=Warrior Chair" },
+            { label: "E-DRA", url: "category.html?name=E-DRA Chair" },
+            { label: "DXRacer", url: "category.html?name=DXRacer" },
+            { label: "Cougar", url: "category.html?name=Cougar Chair" },
+            { label: "AKRaing", url: "category.html?name=AKRaing" },
+            { label: "Razer", url: "category.html?name=Razer Chair" }
         ]
     },
     {
         title: "Thương hiệu ghế CTH",
         links: [
-            "Warrior",
-            "Sihoo",
-            "E-Dra"
+            { label: "Warrior", url: "category.html?name=Warrior Ergonomic" },
+            { label: "Sihoo", url: "category.html?name=Sihoo" },
+            { label: "E-Dra", url: "category.html?name=E-Dra Ergonomic" }
         ]
     },
     {
         title: "Kiểu ghế",
         links: [
-            "Ghế Công thái học",
-            "Ghế Gaming"
+            { label: "Ghế Công thái học", url: "category.html?name=Ergonomic Chair" },
+            { label: "Ghế Gaming", url: "category.html?name=Gaming Chair" }
         ]
     },
     {
         title: "Giá tiền",
         links: [
-            "Dưới 5 triệu",
-            "Từ 5 đến 10 triệu",
-            "Trên 10 triệu"
+            { label: "Dưới 5 triệu", url: "category.html?maxPrice=5000000" },
+            { label: "Từ 5 đến 10 triệu", url: "category.html?minPrice=5000000&maxPrice=10000000" },
+            { label: "Trên 10 triệu", url: "category.html?minPrice=10000000" }
         ]
     },
     {
         title: "Bàn Gaming",
         links: [
-            "Bàn Gaming DXRacer",
-            "Bàn Gaming E-Dra",
-            "Bàn Gaming Warrior"
+            { label: "Bàn Gaming DXRacer", url: "category.html?name=DXRacer Desk" },
+            { label: "Bàn Gaming E-Dra", url: "category.html?name=E-Dra Desk" },
+            { label: "Bàn Gaming Warrior", url: "category.html?name=Warrior Desk" }
         ]
     },
     {
         title: "Bàn công thái học",
         links: [
-            "Bàn CTH Warrior",
-            "Phụ kiện bàn ghế"
+            { label: "Bàn CTH Warrior", url: "category.html?name=Warrior Table" },
+            { label: "Phụ kiện bàn ghế", url: "category.html?name=Desk Accessories" }
         ]
     }
 ],
@@ -816,44 +858,44 @@ const menuData = [
     {
         title: "Hệ điều hành",
         links: [
-            "Windows 11 Home / Pro",
-            "Windows 10 Home / Pro",
-            "Nâng cấp Windows"
+            { label: "Windows 11 Home / Pro", url: "category.html?name=Windows 11" },
+            { label: "Windows 10 Home / Pro", url: "category.html?name=Windows 10" },
+            { label: "Nâng cấp Windows", url: "category.html?name=Windows Upgrade" }
         ]
     },
     {
         title: "Phần mềm văn phòng",
         links: [
-            "Microsoft Office 365",
-            "Microsoft Office 2021",
-            "Phần mềm PDF (Adobe, Foxit)"
+            { label: "Microsoft Office 365", url: "category.html?name=Office 365" },
+            { label: "Microsoft Office 2021", url: "category.html?name=Office 2021" },
+            { label: "Phần mềm PDF (Adobe, Foxit)", url: "category.html?name=PDF Software" }
         ]
     },
     {
         title: "Phần mềm diệt Virus",
         links: [
-            "Kaspersky",
-            "ESET NOD32",
-            "McAfee",
-            "Norton Antivirus"
+            { label: "Kaspersky", url: "category.html?name=Kaspersky" },
+            { label: "ESET NOD32", url: "category.html?name=ESET" },
+            { label: "McAfee", url: "category.html?name=McAfee" },
+            { label: "Norton Antivirus", url: "category.html?name=Norton" }
         ]
     },
     {
         title: "Thiết bị mạng (Router)",
         links: [
-            "Router ASUS",
-            "Router TP-Link",
-            "Router Totolink",
-            "Hệ thống Mesh Wi-Fi"
+            { label: "Router ASUS", url: "category.html?name=ASUS Router" },
+            { label: "Router TP-Link", url: "category.html?name=TP-Link Router" },
+            { label: "Router Totolink", url: "category.html?name=Totolink" },
+            { label: "Hệ thống Mesh Wi-Fi", url: "category.html?name=Mesh WiFi" }
         ]
     },
     {
         title: "Thiết bị mạng khác",
         links: [
-            "USB Wi-Fi / Card Wi-Fi",
-            "Bộ kích sóng Wi-Fi",
-            "Switch chia mạng",
-            "Cáp mạng / Đầu bấm"
+            { label: "USB Wi-Fi / Card Wi-Fi", url: "category.html?name=WiFi Card" },
+            { label: "Bộ kích sóng Wi-Fi", url: "category.html?name=WiFi Booster" },
+            { label: "Switch chia mạng", url: "category.html?name=Network Switch" },
+            { label: "Cáp mạng / Đầu bấm", url: "category.html?name=Network Cable" }
         ]
     }
 ],
@@ -861,35 +903,33 @@ const menuData = [
     {
         title: "Handheld PC",
         links: [
-            "Rog Ally",
-            "MSI Claw",
-            "Legion Go"
+            { label: "Rog Ally", url: "category.html?name=ROG Ally" },
+            { label: "MSI Claw", url: "category.html?name=MSI Claw" },
+            { label: "Legion Go", url: "category.html?name=Legion Go" }
         ]
     },
     {
         title: "Tay cầm",
         links: [
-            "Tay cầm Playstation",
-            "Tay cầm Rapoo",
-            "Tay cầm DareU",
-            "Xem tất cả"
+            { label: "Tay cầm Playstation", url: "category.html?name=PS Controller" },
+            { label: "Tay cầm Rapoo", url: "category.html?name=Rapoo Controller" },
+            { label: "Tay cầm DareU", url: "category.html?name=DareU Gamepad" },
+            { label: "Xem tất cả", url: "category.html?name=Gamepad" }
         ]
     },
     {
         title: "Vô lăng lái xe, máy bay",
         links: [
-            "Vô lăng Logitech",
-            "Vô lăng PXN",
-            "Cần lái máy bay"
+            { label: "Vô lăng Logitech", url: "category.html?name=Logitech Wheel" },
+            { label: "Vô lăng PXN", url: "category.html?name=PXN Wheel" }
         ]
     },
     {
-        title: "Sony Playstation",
+        title: "Phụ kiện khác",
         links: [
-            "Sony PS5 (Máy) chính hãng",
-            "Tay cầm chính hãng",
-            "Phụ kiện PS5",
-            "Đĩa game PS5"
+            { label: "Ghế sim racing", url: "category.html?name=Sim Racing Seat" },
+            { label: "Chân máy game", url: "category.html?name=Game Console Stand" },
+            { label: "Xem tất cả", url: "category.html?name=Gaming Accessories" }
         ]
     }
 ],
@@ -897,29 +937,29 @@ const menuData = [
     {
         title: "Hub, sạc, cáp",
         links: [
-            "Hub chuyển đổi",
-            "Dây cáp",
-            "Củ sạc"
+            { label: "Hub chuyển đổi", url: "category.html?name=Hub" },
+            { label: "Dây cáp", url: "category.html?name=Cable" },
+            { label: "Củ sạc", url: "category.html?name=Charger" }
         ]
     },
     {
         title: "Quạt cầm tay, Quạt mini",
         links: [
-            "Jisulife"
+            { label: "Jisulife", url: "category.html?name=Jisulife" }
         ]
     },
     {
         title: "Phụ kiện Elgato",
         links: [
-            "Giá đỡ / Arm",
-            "Phụ kiện Stream"
+            { label: "Giá đỡ / Arm", url: "category.html?name=Elgato Arm" },
+            { label: "Phụ kiện Stream", url: "category.html?name=Elgato Accessories" }
         ]
     },
     {
         title: "Sạc dự phòng",
         links: [
-            "Sạc dự phòng chính hãng",
-            "Sạc dự phòng không dây"
+            { label: "Sạc dự phòng chính hãng", url: "category.html?name=Power Bank" },
+            { label: "Sạc dự phòng không dây", url: "category.html?name=Wireless Power Bank" }
         ]
     }
 ],
@@ -927,23 +967,23 @@ const menuData = [
     {
         title: "Dịch vụ",
         links: [
-            "Dịch vụ kỹ thuật tại nhà",
-            "Dịch vụ sửa chữa"
+            { label: "Dịch vụ kỹ thuật tại nhà", url: "category.html?name=Technical Service" },
+            { label: "Dịch vụ sửa chữa", url: "category.html?name=Repair Service" }
         ]
     },
     {
         title: "Chính sách",
         links: [
-            "Chính sách & bảng giá thu VGA qua sử dụng",
-            "Chính sách bảo hành",
-            "Chính sách giao hàng",
-            "Chính sách đổi trả"
+            { label: "Chính sách & bảng giá thu VGA qua sử dụng", url: "category.html?name=Trade-in Policy" },
+            { label: "Chính sách bảo hành", url: "category.html?name=Warranty Policy" },
+            { label: "Chính sách giao hàng", url: "category.html?name=Shipping Policy" },
+            { label: "Chính sách đổi trả", url: "category.html?name=Return Policy" }
         ]
     },
     {
         title: "Build PC",
         links: [
-            "Xây dựng cấu hình PC máy tính"
+            { label: "Xây dựng cấu hình PC máy tính", url: "category.html?name=PC Build Service" }
         ]
     }
 ]

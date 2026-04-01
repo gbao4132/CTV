@@ -49,7 +49,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     <div class="col-md-4 mb-3">
                         <h6 class="fw-bold text-ttg">${col.title}</h6>
                         <ul class="list-unstyled">
-                            ${col.links.map(link => `<li><a href="category.html?name=${link}" class="text-decoration-none text-dark small">${link}</a></li>`).join('')}
+                            ${col.links.map(link => {
+                                const url = typeof link === 'string' ? `category.html?name=${link}` : link.url;
+                                const label = typeof link === 'string' ? link : link.label;
+                                return `<li><a href="${url}" class="text-decoration-none text-dark small">${label}</a></li>`;
+                            }).join('')}
                         </ul>
                     </div>`;
             });

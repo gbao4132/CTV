@@ -112,12 +112,21 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             });
 
+            // Bắt lấy giá trị giá trên URL (nếu có)
+            const minPrice = parseInt(urlParams.get('minPrice')) || 0;
+            const maxPrice = parseInt(urlParams.get('maxPrice')) || Infinity;
+
             // --- D. LỌC TRỰC TIẾP SẢN PHẨM HIỂN THỊ DỰA TRÊN URL ---
             let finalProducts = baseProducts.filter(p => {
+                // 1. Kiểm tra điều kiện Giá trước
+                if (p.price < minPrice) return false;
+                if (maxPrice !== Infinity && p.price > maxPrice) return false;
+
+                // 2. Kiểm tra điều kiện Thông số kỹ thuật (Specs)
                 let isMatch = true;
                 for (const [key, value] of urlParams.entries()) {
-                    // Bỏ qua các param hệ thống, chỉ xét param thuộc tính
-                    if (['name', 'category', 'sort'].includes(key)) continue; 
+                    // Bỏ qua các param hệ thống và param giá để không bị lỗi
+                    if (['name', 'category', 'sort', 'minPrice', 'maxPrice'].includes(key)) continue; 
                     
                     if (!p.specs || p.specs[key] !== value) {
                         isMatch = false;

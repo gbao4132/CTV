@@ -6,7 +6,7 @@ const menuData = [
     { name: "Laptop Gaming", icon: "bi-headset", target: "#megamenu-laptop-gaming" },
     { name: "Main, CPU, VGA", icon: "bi-cpu", target: "#megamenu-linh-kien" },
     { name: "Case, Nguồn, Tản", icon: "bi-pc-display-horizontal", target: "#megamenu-tan-nhiet" },
-    { name: "Ổ cứng, RAM, Thẻ nhớ", icon: "bi-memory", target: "#megamenu-luu-tru" },
+    { name: "Ổ cứng, RAM", icon: "bi-memory", target: "#megamenu-luu-tru" },
     { name: "Loa, Micro, Webcam", icon: "bi-speakers", target: "#megamenu-am-thanh" },
     { name: "Màn hình", icon: "bi-display", target: "#megamenu-man-hinh" },
     { name: "Bàn phím", icon: "bi-keyboard", target: "#megamenu-ban-phim" },
