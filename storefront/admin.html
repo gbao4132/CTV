@@ -2,111 +2,224 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Admin - Thêm Sản Phẩm</title>
+    <title>Admin - Quản Lý Sản Phẩm (CMS)</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .loading-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.7); display: none; align-items: center; justify-content: center; z-index: 10; }
+        .product-img-sm { width: 50px; height: 50px; object-fit: contain; }
+    </style>
 </head>
 <body class="bg-light">
     <div class="container py-5">
-        <div class="card shadow-sm mx-auto" style="max-width: 600px;">
-            <div class="card-header bg-danger text-white">
-                <h4 class="mb-0">Thêm Sản Phẩm Mới</h4>
+        
+        <div class="card shadow-sm mx-auto position-relative mb-5" style="max-width: 800px;">
+            <div id="loadingOverlay" class="loading-overlay text-danger fw-bold">Đang xử lý...</div>
+            <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
+                <h4 class="mb-0" id="formTitle">Thêm Sản Phẩm Mới</h4>
+                <div>
+                    <button class="btn btn-sm btn-light d-none me-2" id="btnCancelEdit" onclick="cancelEdit()">Hủy sửa</button>
+                    <a href="admin-specs.html" class="btn btn-sm btn-outline-light">Quản lý cấu hình ⚙️</a>
+                </div>
             </div>
+            
             <div class="card-body">
                 <form id="productForm">
-                    <div class="mb-3">
-                        <label class="form-label">Tên sản phẩm</label>
-                        <input type="text" id="title" class="form-control" required placeholder="VD: Chuột Logitech G Pro">
+                    <input type="hidden" id="editProductId"> 
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Tên sản phẩm</label>
+                            <input type="text" id="title" class="form-control" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Giá (VNĐ)</label>
+                            <input type="number" id="price" class="form-control" required>
+                        </div>
                     </div>
                     
-                    <div class="mb-3">
-                        <label class="form-label">Giá (VNĐ)</label>
-                        <input type="number" id="price" class="form-control" required>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label class="form-label">Danh mục</label>
-                        <select id="category" class="form-select" required>
-                            <option value="">-- Chọn danh mục --</option>
-                            <option value="Laptop">Laptop</option>
-                            <option value="Desktop">Desktop (PC Build sẵn)</option>
-                            <option value="ManHinh">Màn hình</option>
-                            <option value="VGA">Card Màn Hình (VGA)</option>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Danh mục</label>
+                            <select id="category" class="form-select" required>
+                                <option value="">-- Đang tải... --</option>
                             </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Link ảnh (URL)</label>
+                            <input type="text" id="image" class="form-control" required>
+                        </div>
                     </div>
 
                     <div id="dynamicSpecsContainer" class="p-3 mb-3 bg-light border rounded d-none">
-                        <h6 class="text-danger border-bottom pb-2 mb-3">Thông số kỹ thuật (Gõ để tìm & chọn)</h6>
+                        <h6 class="text-danger border-bottom pb-2 mb-3">Thông số kỹ thuật</h6>
                         <div id="specsFields" class="row g-3"></div>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Link ảnh (URL)</label>
-                        <input type="text" id="image" class="form-control" required placeholder="https://...">
                     </div>
                     
                     <div class="mb-3">
                         <label class="form-label">Mô tả ngắn</label>
-                        <textarea id="description" class="form-control" rows="3"></textarea>
+                        <textarea id="description" class="form-control" rows="2"></textarea>
                     </div>
                     
-                    <button type="submit" class="btn btn-danger w-100">Thêm sản phẩm</button>
+                    <button type="submit" class="btn btn-danger w-100 fw-bold" id="btnSubmit">THÊM SẢN PHẨM</button>
                 </form>
             </div>
         </div>
+
+        <div class="card shadow-sm mx-auto" style="max-width: 1000px;">
+            <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Danh Sách Sản Phẩm Trong Kho</h5>
+                <input type="text" id="adminSearchInput" class="form-control form-control-sm w-50" placeholder="🔍 Nhập tên sản phẩm để tìm nhanh..." onkeyup="searchAdminProducts()">
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Ảnh</th>
+                                <th>Tên sản phẩm</th>
+                                <th>Danh mục</th>
+                                <th>Giá</th>
+                                <th class="text-center">Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminProductList">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-    <script src="js/specs-config.js"></script>
-
     <script>
-        const categorySelect = document.getElementById('category');
-        const dynamicContainer = document.getElementById('dynamicSpecsContainer');
-        const specsFields = document.getElementById('specsFields');
+        let categorySpecsConfig = {};
+        let allProducts = []; 
 
-        // XỬ LÝ KHI CHỌN DANH MỤC
-        categorySelect.addEventListener('change', function() {
-            const selectedCat = this.value;
+        async function fetchSpecsConfig() {
+            try {
+                const response = await fetch('http://localhost:3000/api/specs-config');
+                categorySpecsConfig = await response.json();
+                
+                const categorySelect = document.getElementById('category');
+                categorySelect.innerHTML = '<option value="">-- Chọn danh mục --</option>';
+                Object.keys(categorySpecsConfig).forEach(cat => {
+                    categorySelect.innerHTML += `<option value="${cat}">${cat}</option>`;
+                });
+            } catch (error) { console.error("Lỗi tải config:", error); }
+        }
+
+        // ĐÃ FIX: p._id || p.id
+        function renderAdminTable(dataToRender) {
+            const tbody = document.getElementById('adminProductList');
+            tbody.innerHTML = '';
+            dataToRender.forEach(p => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td><img src="${p.image}" class="product-img-sm border rounded" style="width:50px;height:50px;object-fit:contain;"></td>
+                        <td class="fw-bold">${p.title}</td>
+                        <td><span class="badge bg-secondary">${p.category}</span></td>
+                        <td class="text-danger fw-bold">${p.price.toLocaleString()}đ</td>
+                        <td class="text-center">
+                            <button class="btn btn-sm btn-primary" onclick="editProduct('${p._id || p.id}')">Sửa</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteProduct('${p._id || p.id}')">Xóa</button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        async function fetchAdminProducts() {
+            try {
+                const res = await fetch('http://localhost:3000/api/products');
+                allProducts = await res.json();
+                renderAdminTable(allProducts); 
+            } catch (error) { console.error("Lỗi tải SP:", error); }
+        }
+
+        function searchAdminProducts() {
+            const keyword = document.getElementById('adminSearchInput').value.toLowerCase();
+            const filteredProducts = allProducts.filter(p => 
+                p.title.toLowerCase().includes(keyword)
+            );
+            renderAdminTable(filteredProducts); 
+        }
+
+        document.getElementById('category').addEventListener('change', function() {
+            renderSpecsFields(this.value);
+        });
+
+        function renderSpecsFields(categoryName, existingSpecs = {}) {
+            const dynamicContainer = document.getElementById('dynamicSpecsContainer');
+            const specsFields = document.getElementById('specsFields');
+            const requiredSpecs = categorySpecsConfig[categoryName];
             
-            // Kiểm tra xem file specs-config.js đã load thành công chưa
-            if (typeof categorySpecsConfig === 'undefined') {
-                console.error("Lỗi: Không tìm thấy file js/specs-config.js");
-                return;
-            }
-
-            const requiredSpecs = categorySpecsConfig[selectedCat];
             specsFields.innerHTML = '';
 
-            if (requiredSpecs) {
+            if (requiredSpecs && requiredSpecs.length > 0) {
                 dynamicContainer.classList.remove('d-none');
-                
                 requiredSpecs.forEach(spec => {
-                    // Tạo danh sách các tùy chọn (Datalist)
                     const optionsHTML = spec.options.map(opt => `<option value="${opt}">`).join('');
+                    const val = existingSpecs[spec.key] || '';
                     
                     specsFields.innerHTML += `
                         <div class="col-md-6">
                             <label class="form-label small fw-bold text-secondary">${spec.label}</label>
-                            <input type="text" class="form-control spec-input" data-key="${spec.key}" list="datalist-${spec.key}" placeholder="Chọn hoặc gõ...">
-                            <datalist id="datalist-${spec.key}">
-                                ${optionsHTML}
-                            </datalist>
+                            <input type="text" class="form-control spec-input" data-key="${spec.key}" list="datalist-${spec.key}" value="${val}">
+                            <datalist id="datalist-${spec.key}">${optionsHTML}</datalist>
                         </div>
                     `;
                 });
             } else {
                 dynamicContainer.classList.add('d-none');
             }
-        });
+        }
 
-        // XỬ LÝ LƯU SẢN PHẨM
+        // ĐÃ FIX: Biến truyền vào fetch là id, không phải _id
+        async function deleteProduct(id) {
+            if (!confirm("⚠️ Chắc chắn xóa sản phẩm này khỏi Database?")) return;
+            try {
+                const res = await fetch(`http://localhost:3000/api/products/${id}`, { method: 'DELETE' });
+                if (res.ok) fetchAdminProducts(); 
+                else alert("Xóa thất bại!");
+            } catch (err) { alert("Lỗi Server"); }
+        }
+
+        function editProduct(id) {
+            const p = allProducts.find(item => (item._id || item.id) === id);
+            if(!p) return;
+
+            document.getElementById('formTitle').innerText = "Cập Nhật Sản Phẩm";
+            document.getElementById('btnSubmit').innerText = "LƯU THAY ĐỔI";
+            document.getElementById('btnSubmit').classList.replace('btn-danger', 'btn-success');
+            document.getElementById('btnCancelEdit').classList.remove('d-none');
+            
+            document.getElementById('editProductId').value = id;
+            document.getElementById('title').value = p.title;
+            document.getElementById('price').value = p.price;
+            document.getElementById('image').value = p.image;
+            document.getElementById('description').value = p.description || '';
+            document.getElementById('category').value = p.category;
+
+            renderSpecsFields(p.category, p.specs);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function cancelEdit() {
+            document.getElementById('productForm').reset();
+            document.getElementById('formTitle').innerText = "Thêm Sản Phẩm Mới";
+            document.getElementById('btnSubmit').innerText = "THÊM SẢN PHẨM";
+            document.getElementById('btnSubmit').classList.replace('btn-success', 'btn-danger');
+            document.getElementById('btnCancelEdit').classList.add('d-none');
+            document.getElementById('editProductId').value = '';
+            document.getElementById('dynamicSpecsContainer').classList.add('d-none');
+        }
+
         document.getElementById('productForm').addEventListener('submit', async (e) => {
             e.preventDefault();
+            document.getElementById('loadingOverlay').style.display = 'flex';
 
-            // Gói gọn các thông số vào 1 Object
             const specsData = {};
             document.querySelectorAll('.spec-input').forEach(input => {
-                if (input.value.trim() !== '') {
-                    specsData[input.dataset.key] = input.value.trim();
-                }
+                if (input.value.trim() !== '') specsData[input.dataset.key] = input.value.trim();
             });
 
             const productData = {
@@ -115,30 +228,33 @@
                 description: document.getElementById('description').value,
                 category: document.getElementById('category').value,
                 image: document.getElementById('image').value,
-                rating: { rate: 5, count: 0 },
                 specs: specsData
             };
 
+            const editId = document.getElementById('editProductId').value;
+            const method = editId ? 'PUT' : 'POST';
+            const url = editId ? `http://localhost:3000/api/products/${editId}` : 'http://localhost:3000/api/products';
+
             try {
-                const response = await fetch('http://localhost:3000/api/products', {
-                    method: 'POST',
+                const response = await fetch(url, {
+                    method: method,
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(productData)
                 });
 
                 if (response.ok) {
-                    alert("✅ Thêm thành công! Dữ liệu cực chuẩn!");
-                    document.getElementById('productForm').reset();
-                    dynamicContainer.classList.add('d-none');
+                    alert(editId ? "✅ Cập nhật thành công!" : "✅ Thêm mới thành công!");
+                    cancelEdit(); 
+                    fetchAdminProducts(); 
                 } else {
-                    const errorData = await response.json();
-                    alert("❌ Lỗi rồi: " + errorData.error);
+                    alert("❌ Có lỗi xảy ra!");
                 }
-            } catch (error) {
-                console.error("Lỗi kết nối:", error);
-                alert("❌ Không kết nối được với Server. Hãy kiểm tra xem Backend đã chạy chưa!");
-            }
+            } catch (error) { alert("❌ Không kết nối được Backend"); }
+            finally { document.getElementById('loadingOverlay').style.display = 'none'; }
         });
+
+        fetchSpecsConfig();
+        fetchAdminProducts();
     </script>
 </body>
 </html>

@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     
-    const isHomePage = window.location.pathname.endsWith('index.html') || window.location.pathname === '/';
+    const isHomePage = window.location.pathname.endsWith('home.html') || window.location.pathname === '/';
 
     // 1. TẢI HEADER
     async function loadHeader() {

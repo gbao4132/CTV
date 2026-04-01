@@ -1,7 +1,9 @@
+require('dotenv').config(); 
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
+const CategorySpec = require('./models/CategorySpec');
 const Product = require('./models/Product');
 
 const app = express();
@@ -11,57 +13,102 @@ const MONGO_URI = process.env.MONGO_URI;
 app.use(cors());
 app.use(express.json());
 
+app.get('/test', (req, res) => {
+    res.send("Server đang chạy và nhận diện được Route này!");
+});
+
 mongoose.connect(MONGO_URI)
   .then(() => console.log('✅ Đã kết nối thành công tới MongoDB!'))
   .catch((err) => console.error('❌ Lỗi kết nối MongoDB:', err.message));
 
-// API Lấy danh sách sản phẩm (Hỗ trợ Lọc và Tìm kiếm)
-// API Lấy danh sách sản phẩm (Hỗ trợ Lọc và Tìm kiếm)
+// --- 1. API CẤU HÌNH (SPECS) ---
+app.get('/api/specs-config', async (req, res) => {
+    try {
+        const configs = await CategorySpec.find();
+        const formatted = {};
+        configs.forEach(c => formatted[c.category] = c.specsConfig);
+        res.json(formatted);
+    } catch (err) {
+        res.status(500).json({ error: "Lỗi lấy cấu hình từ DB" });
+    }
+});
+
+app.post('/api/specs-config/update', async (req, res) => {
+    try {
+        const { category, specsConfig } = req.body;
+        const result = await CategorySpec.findOneAndUpdate(
+            { category }, { specsConfig }, { upsert: true, new: true }
+        );
+        res.json({ message: "Cập nhật cấu hình thành công!", data: result });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// --- 2. API SẢN PHẨM ---
 app.get('/api/products', async (req, res) => {
     try {
-        // Lấy các tham số từ URL (VD: ?category=VGA&name=RTX&minPrice=20000000)
-        const { category, name, minPrice, maxPrice } = req.query;
-        
-        // Tạo một object query rỗng, nếu có bộ lọc nào thì thêm vào
         let query = {};
+        if (req.query.name) query.title = { $regex: req.query.name, $options: 'i' };
+        if (req.query.category) query.category = req.query.category;
 
-        // 1. Lọc theo danh mục (chính xác)
-        if (category) {
-            query.category = category;
+        const excludedParams = ['name', 'category', 'sort']; 
+        for (const key in req.query) {
+            if (!excludedParams.includes(key)) {
+                query[`specs.${key}`] = req.query[key]; 
+            }
         }
 
-        // 2. Tìm kiếm theo tên (Tìm tương đối, không phân biệt hoa/thường)
-        if (name) {
-            query.title = { $regex: name, $options: 'i' }; 
-        }
+        let sortObj = {};
+        if (req.query.sort === 'asc') sortObj.price = 1;
+        if (req.query.sort === 'desc') sortObj.price = -1;
 
-        // 3. Lọc theo khoảng giá (Lớn hơn min, nhỏ hơn max)
-        if (minPrice || maxPrice) {
-            query.price = {};
-            if (minPrice) query.price.$gte = Number(minPrice); // $gte: Greater than or equal
-            if (maxPrice) query.price.$lte = Number(maxPrice); // $lte: Less than or equal
-        }
-
-        // Bắt MongoDB tìm kiếm dựa trên bộ lọc đã tạo
-        const products = await Product.find(query);
+        const products = await Product.find(query).sort(sortObj);
         res.json(products);
+    } catch (error) {
+        res.status(500).json({ error: "Lỗi Server" });
+    }
+});
 
+app.post('/api/products', async (req, res) => {
+    try {
+        const product = new Product(req.body);
+        await product.save();
+        res.status(201).json({ message: "Thêm thành công!", data: product });
+    } catch (err) {
+        res.status(400).json({ error: err.message });
+    }
+});
+
+// API Cập nhật (Sửa) sản phẩm - ĐÃ FIX LỖI :_id thành :id
+app.put('/api/products/:id', async (req, res) => {
+    try {
+        const updatedProduct = await Product.findByIdAndUpdate(
+            req.params.id, 
+            req.body, 
+            { new: true } 
+        );
+        res.json({ message: "Cập nhật thành công!", data: updatedProduct });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// API Xóa sản phẩm
+app.delete('/api/products/:id', async (req, res) => {
+    try {
+        const productId = req.params.id;
+        if (mongoose.Types.ObjectId.isValid(productId)) {
+            await Product.findByIdAndDelete(productId);
+        } else {
+            await Product.findOneAndDelete({ id: productId });
+        }
+        res.json({ message: "Xóa sản phẩm thành công!" });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 Inventory Service đang lắng nghe tại port ${PORT}`);
-});
-
-// Route để thêm sản phẩm mới (Dùng cho trang Admin sau này)
-app.post('/api/products', async (req, res) => {
-    try {
-        const product = new Product(req.body); // Lấy dữ liệu từ Form gửi lên
-        await product.save();
-        res.status(201).json({ message: "Thêm thành công!", data: product });
-    } catch (err) {
-        res.status(400).json({ error: err.message });
-    }
+  console.log(`🚀 Server đang chạy cực mượt tại: http://localhost:${PORT}`);
 });

@@ -1,95 +1,200 @@
-function getQueryParams() {
-    const params = new URLSearchParams(window.location.search);
-    return params.toString(); 
-}
+document.addEventListener('DOMContentLoaded', async () => {
 
-// 1. Xử lý Tìm kiếm khi gõ ở Header
-document.getElementById('searchBtn').addEventListener('click', () => {
-    const keyword = document.getElementById('searchInput').value;
-    window.location.href = `category.html?name=${keyword}`;
-});
+    const urlParams = new URLSearchParams(window.location.search);
+    const keyword = urlParams.get('name') || '';
+    let category = urlParams.get('category') || ''; 
+    const currentSort = urlParams.get('sort') || '';
 
-// 2. Xử lý Lọc giá (Thấp -> Cao / Cao -> Thấp)
-// Giả sử bạn đặt ID cho thẻ select lọc giá là 'sortSelect'
-const sortSelect = document.getElementById('sortSelect');
-if(sortSelect) {
-    sortSelect.addEventListener('change', (e) => {
-        const sortValue = e.target.value; // 'asc' hoặc 'desc'
-        const currentParams = new URLSearchParams(window.location.search);
-        currentParams.set('sortPrice', sortValue); // Thêm hoặc sửa tham số sortPrice
-        window.location.search = currentParams.toString(); // Load lại trang với bộ lọc mới
-    });
-}
+    // Tự động nhận diện danh mục từ khóa
+    if (!category && keyword) {
+        const kw = keyword.toLowerCase();
+        if (kw.includes('laptop')) category = 'Laptop';
+        else if (kw.includes('màn hình') || kw.includes('man hinh')) category = 'ManHinh';
+        else if (kw.includes('desktop') || kw.includes('pc')) category = 'Desktop';
+        else if (kw.includes('vga') || kw.includes('card')) category = 'VGA';
+    }
 
-const keyword = new URLSearchParams(window.location.search).get('name') || '';
-const queryText = document.getElementById('search-query-text');
-if (queryText && keyword) {
-    queryText.innerHTML = `Tìm kiếm theo <span class="fw-bold">${keyword}</span>.`;
-}
-async function loadProducts() {
-    const params = window.location.search; 
-    console.log("--- Bắt đầu tải sản phẩm với tham số: " + params);
+    // Cập nhật tiêu đề
+    const queryText = document.getElementById('search-query-text');
+    if (keyword) queryText.innerHTML = `Kết quả tìm kiếm cho <span class="fw-bold text-danger">"${keyword}"</span>.`;
+    else if (category) queryText.innerHTML = `Đang hiển thị danh mục: <span class="fw-bold text-danger">${category}</span>.`;
+    else queryText.innerHTML = `Tất cả sản phẩm`;
 
+    // 1. LẤY TÊN NHÃN TỪ DB (Để dịch key 'cpu' -> 'CPU')
+    let specsConfigMap = {};
     try {
-        const response = await fetch(`http://localhost:3000/api/products${params}`);
-        const products = await response.json();
+        const resConfig = await fetch('http://localhost:3000/api/specs-config');
+        const allSpecsConfig = await resConfig.json();
+        Object.values(allSpecsConfig).forEach(catSpecs => {
+            catSpecs.forEach(spec => {
+                specsConfigMap[spec.key] = spec.label; // Lưu từ điển { cpu: "CPU", vga: "Card đồ họa" }
+            });
+        });
+    } catch(e) { console.error("Lỗi tải config:", e); }
 
-        console.log("--- Đã lấy được dữ liệu từ Backend:", products);
+    // 2. TẢI DỮ LIỆU GỐC & VẼ BỘ LỌC THÔNG MINH
+    async function loadAndFilter() {
+        try {
+            // Chỉ gọi API backend dựa trên Tìm kiếm (name) và Danh mục (category)
+            let baseUrl = 'http://localhost:3000/api/products?';
+            if (keyword) baseUrl += `name=${encodeURIComponent(keyword)}&`;
+            if (category) baseUrl += `category=${encodeURIComponent(category)}&`;
 
-        const productGrid = document.getElementById('product-list');
-        
-        if (!productGrid) {
-            console.error("❌ LỖI: Không tìm thấy thẻ HTML có id='product-list'!");
-            return;
-        }
+            const res = await fetch(baseUrl);
+            const baseProducts = await res.json(); // Danh sách GỐC (VD: Toàn bộ đồ Asus)
 
-        productGrid.innerHTML = ''; // Xóa sạch đống cũ
+            const filterContainer = document.getElementById('dynamic-filters');
+            filterContainer.innerHTML = '';
 
-        if (products.length === 0) {
-            // SỬA Ở ĐÂY: Dùng classList thay vì style.display
-            const filterBar = document.getElementById('filter-bar');
-            filterBar.classList.remove('d-flex');
-            filterBar.classList.add('d-none');
+            if (baseProducts.length === 0) {
+                renderProducts([]); 
+                return;
+            }
+
+            // --- A. QUÉT TÌM CÁC THUỘC TÍNH CÓ THẬT ---
+            const availableSpecs = {};
+            const availableCats = new Set();
+
+            baseProducts.forEach(p => {
+                if (p.category) availableCats.add(p.category);
+                
+                if (p.specs) {
+                    Object.keys(p.specs).forEach(key => {
+                        if (!availableSpecs[key]) availableSpecs[key] = new Set();
+                        if (p.specs[key].trim() !== '') {
+                            availableSpecs[key].add(p.specs[key]);
+                        }
+                    });
+                }
+            });
+
+            // --- B. VẼ DROPDOWN DANH MỤC (Nếu có nhiều hơn 1 danh mục) ---
+            const catSelect = document.createElement('select');
+            catSelect.className = 'form-select form-select-sm w-auto border-secondary';
+            catSelect.innerHTML = `<option value="">-- Tất cả danh mục --</option>`;
             
-            const emptyBox = document.getElementById('search-empty');
-            emptyBox.style.display = 'block';
-            document.getElementById('empty-search-input').value = new URLSearchParams(window.location.search).get('name') || '';
-            return;
-        }
+            availableCats.forEach(cat => {
+                const isSelected = category === cat ? 'selected' : '';
+                catSelect.innerHTML += `<option value="${cat}" ${isSelected}>${cat}</option>`;
+            });
+            catSelect.addEventListener('change', (e) => {
+                // Khi đổi danh mục, xóa hết các bộ lọc con đi để tránh lỗi
+                const newParams = new URLSearchParams();
+                if (keyword) newParams.set('name', keyword);
+                if (e.target.value) newParams.set('category', e.target.value);
+                window.location.search = newParams.toString(); 
+            });
+            filterContainer.appendChild(catSelect);
 
-// Khi có kết quả thì hiện lại bộ lọc (phòng trường hợp load lại)
+            // --- C. VẼ DROPDOWN THUỘC TÍNH ---
+            Object.keys(availableSpecs).forEach(key => {
+                const options = Array.from(availableSpecs[key]).sort(); // Sắp xếp A-Z
+                
+                // Chỉ hiển thị dropdown nếu thuộc tính này có từ 1 tùy chọn trở lên
+                if (options.length > 0) {
+                    const label = specsConfigMap[key] || key.toUpperCase();
+                    const selectBox = document.createElement('select');
+                    selectBox.className = 'form-select form-select-sm w-auto';
+                    selectBox.innerHTML = `<option value="">-- ${label} --</option>`;
+                    
+                    options.forEach(opt => {
+                        const isSelected = urlParams.get(key) === opt ? 'selected' : '';
+                        selectBox.innerHTML += `<option value="${opt}" ${isSelected}>${opt}</option>`;
+                    });
+
+                    selectBox.addEventListener('change', (e) => {
+                        if (e.target.value) urlParams.set(key, e.target.value);
+                        else urlParams.delete(key);
+                        window.location.search = urlParams.toString();
+                    });
+
+                    filterContainer.appendChild(selectBox);
+                }
+            });
+
+            // --- D. LỌC TRỰC TIẾP SẢN PHẨM HIỂN THỊ DỰA TRÊN URL ---
+            let finalProducts = baseProducts.filter(p => {
+                let isMatch = true;
+                for (const [key, value] of urlParams.entries()) {
+                    // Bỏ qua các param hệ thống, chỉ xét param thuộc tính
+                    if (['name', 'category', 'sort'].includes(key)) continue; 
+                    
+                    if (!p.specs || p.specs[key] !== value) {
+                        isMatch = false;
+                        break;
+                    }
+                }
+                return isMatch;
+            });
+
+            // Sắp xếp
+            if (currentSort === 'asc') finalProducts.sort((a, b) => a.price - b.price);
+            else if (currentSort === 'desc') finalProducts.sort((a, b) => b.price - a.price);
+
+            // Vẽ lưới sản phẩm
+            renderProducts(finalProducts);
+
+        } catch(e) { console.error("Lỗi tải sản phẩm:", e); }
+    }
+
+    // 3. XỬ LÝ LỌC GIÁ
+    const sortSelect = document.getElementById('sortSelect');
+    if (sortSelect) {
+        sortSelect.value = currentSort; 
+        sortSelect.addEventListener('change', (e) => {
+            if (e.target.value) urlParams.set('sort', e.target.value);
+            else urlParams.delete('sort');
+            window.location.search = urlParams.toString();
+        });
+    }
+
+    // 4. FORMAT THÔNG SỐ
+    function formatSpecs(p) {
+        if (p.specs && Object.keys(p.specs).length > 0) {
+            return Object.values(p.specs).slice(0, 4).join(' &bull; '); 
+        }
+        if (p.description && p.description.trim() !== "") return p.description;
+        return 'Đang cập nhật cấu hình...'; 
+    }
+
+    // 5. VẼ LƯỚI SẢN PHẨM
+    function renderProducts(products) {
+        const productGrid = document.getElementById('product-list');
         const filterBar = document.getElementById('filter-bar');
+        const emptyBox = document.getElementById('search-empty');
+
+        productGrid.innerHTML = ''; 
+
+        // Luôn hiện thanh filter để người dùng có thể gỡ bỏ filter nếu lỡ tay chọn sai
         filterBar.classList.remove('d-none');
         filterBar.classList.add('d-flex');
-        
-        document.getElementById('search-empty').style.display = 'none';
+
+        if (products.length === 0) {
+            emptyBox.style.display = 'block';
+            return;
+        }
+
+        emptyBox.style.display = 'none';
 
         products.forEach(p => {
+            const specsHTML = formatSpecs(p);
             productGrid.innerHTML += `
                 <div class="col">
-                    <div class="card h-100 shadow-sm product-card p-2">
+                    <div class="card h-100 shadow-sm product-card p-2 position-relative">
                         <img src="${p.image}" class="card-img-top p-2" alt="${p.title}">
                         <div class="card-body p-2 d-flex flex-column">
-                            <a href="#" class="product-title mb-2 text-decoration-none text-dark fw-bold" style="font-size: 14px;">${p.title}</a>
-                            <div class="product-specs mt-auto">
-                                <small class="text-muted" style="font-size: 12px;">${p.description}</small>
-                            </div>
-                            <div class="mt-2">
-                                <div class="price-new text-danger fw-bold">${Number(p.price).toLocaleString()}đ</div>
-                                <div class="small text-warning">
-                                    <i class="fas fa-star"></i> ${p.rating?.rate || 5} (${p.rating?.count || 0})
-                                </div>
+                            <a href="product-detail.html?id=${p._id || p.id}" class="product-title mb-2 text-decoration-none text-dark">${p.title}</a>
+                            <div class="product-specs mt-auto">${specsHTML}</div>
+                            <div class="mt-1 d-flex justify-content-between align-items-center">
+                                <div class="price-new">${Number(p.price).toLocaleString('vi-VN')}đ</div>
+                                <div class="small text-warning"><i class="fas fa-star"></i> ${p.rating?.rate || 5}</div>
                             </div>
                         </div>
                     </div>
                 </div>
             `;
         });
-        console.log("--- Đã vẽ xong " + products.length + " sản phẩm lên màn hình!");
-    } catch (error) {
-        console.error("❌ LỖI KHI GỌI API:", error);
     }
-}
 
-// Gọi hàm chạy ngay lập tức
-loadProducts();
+    loadAndFilter();
+});
