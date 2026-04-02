@@ -36,6 +36,11 @@ window.switchTab = function(tabId, element) {
     if (tabId === 'orders') {
         loadMyOrders(); 
     }
+
+    // Nếu người dùng click vào tab Sản phẩm đã xem, vẽ danh sách
+    if (tabId === 'history') {
+        renderRecentlyViewed('tracking-history-container');
+    }
 };
 
 // Biến toàn cục để lưu lại danh sách đơn hàng đã tải về

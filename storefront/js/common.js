@@ -363,3 +363,32 @@ window.showCartPopup = function(image, title) {
     // ==========================================
     loadHeader(); 
 });
+
+// Hàm vẽ danh sách sản phẩm đã xem (Đẩy ra ngoài DOMContentLoaded để gọi được từ bất kỳ đâu)
+window.renderRecentlyViewed = function(containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    let viewed = JSON.parse(localStorage.getItem('recentlyViewed')) || [];
+    if (viewed.length === 0) {
+        container.innerHTML = '<div class="text-center text-muted py-4">Bạn chưa xem sản phẩm nào.</div>';
+        return;
+    }
+
+    let html = '<div class="row row-cols-2 row-cols-md-4 row-cols-lg-5 g-3">';
+    viewed.forEach(p => {
+        html += `
+            <div class="col">
+                <a href="product-detail.html?id=${p.id}" class="card h-100 shadow-sm text-decoration-none">
+                    <img src="${p.image}" class="card-img-top p-3" style="height: 150px; object-fit: contain;" alt="${p.title}">
+                    <div class="card-body d-flex flex-column">
+                        <h6 class="card-title text-dark" style="font-size: 14px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${p.title}</h6>
+                        <div class="mt-auto text-danger fw-bold">${p.price.toLocaleString('vi-VN')}đ</div>
+                    </div>
+                </a>
+            </div>
+        `;
+    });
+    html += '</div>';
+    container.innerHTML = html;
+};

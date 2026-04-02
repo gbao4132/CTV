@@ -82,6 +82,11 @@
         </div>
     </div>
 
+    <div class="container mt-5 mb-5">
+        <h4 class="fw-bold mb-3 border-bottom pb-2">SẢN PHẨM VỪA XEM</h4>
+        <div id="bottom-history-container"></div>
+    </div>
+
     <script src="js/megamenudata.js"></script>
     <script src="js/common.js"></script>
     <script>
@@ -124,6 +129,9 @@
                 if (product.description) {
                     document.getElementById('pd-desc').innerHTML = `<strong>Mô tả:</strong> ${product.description}`;
                 }
+
+                // Lưu vào lịch sử xem
+                saveRecentlyViewed(product);
 
                 // 4. VẼ BẢNG THÔNG SỐ
                 const tbody = document.getElementById('pd-specs-table');
@@ -177,6 +185,36 @@ document.getElementById('btn-buy-now').addEventListener('click', () => {
             } catch (error) {
                 console.error("Lỗi:", error);
                 document.querySelector('.container').innerHTML = `<h3 class="text-center text-danger mt-5">Sản phẩm không tồn tại hoặc lỗi Server!</h3>`;
+            }
+        });
+
+        // Hàm lưu lịch sử xem
+        function saveRecentlyViewed(product) {
+            let viewed = JSON.parse(localStorage.getItem('recentlyViewed')) || [];
+            
+            // Xóa sản phẩm trùng lặp (nếu đã xem rồi thì xóa cũ, đẩy lên đầu)
+            const productId = product._id || product.id;
+            viewed = viewed.filter(p => (p._id || p.id) !== productId);
+            
+            // Thêm vào đầu mảng
+            viewed.unshift({
+                id: productId,
+                title: product.title,
+                price: product.price,
+                image: product.image
+            });
+            
+            // Giới hạn lưu tối đa 10 sản phẩm gần nhất
+            if (viewed.length > 10) viewed.pop();
+            
+            localStorage.setItem('recentlyViewed', JSON.stringify(viewed));
+        }
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if(typeof renderRecentlyViewed === 'function') {
+                renderRecentlyViewed('bottom-history-container');
             }
         });
     </script>
