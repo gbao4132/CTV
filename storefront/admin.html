@@ -2,95 +2,182 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Admin - Quản Lý Sản Phẩm (CMS)</title>
+    <title>Admin Dashboard - KIET VA BAO PC</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/common.css">
     <style>
+        body { background-color: #f4f6f9; }
         .loading-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.7); display: none; align-items: center; justify-content: center; z-index: 10; }
         .product-img-sm { width: 50px; height: 50px; object-fit: contain; }
+        
+        /* CSS CHO ADMIN LAYOUT */
+        .admin-container { display: flex; min-height: 100vh; }
+        .admin-sidebar { width: 250px; background: #343a40; color: #fff; flex-shrink: 0; }
+        .admin-sidebar .logo { padding: 20px; font-size: 20px; font-weight: bold; border-bottom: 1px solid #4f5962; text-align: center; color: #fff; text-decoration: none; display: block; }
+        .admin-nav { list-style: none; padding: 0; margin: 0; }
+        .admin-nav li { padding: 15px 20px; cursor: pointer; border-bottom: 1px solid #4f5962; transition: 0.3s; }
+        .admin-nav li:hover, .admin-nav li.active { background: #ed1b24; color: #fff; }
+        .admin-nav li i { width: 25px; }
+        .admin-content { flex-grow: 1; padding: 30px; overflow-y: auto; }
+        
+        .admin-tab { display: none; }
+        .admin-tab.active { display: block; }
     </style>
 </head>
-<body class="bg-light">
-    <div class="container py-5">
+<body>
+    <div class="admin-container">
         
-        <div class="card shadow-sm mx-auto position-relative mb-5" style="max-width: 800px;">
-            <div id="loadingOverlay" class="loading-overlay text-danger fw-bold">Đang xử lý...</div>
-            <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
-                <h4 class="mb-0" id="formTitle">Thêm Sản Phẩm Mới</h4>
-                <div>
-                    <button class="btn btn-sm btn-light d-none me-2" id="btnCancelEdit" onclick="cancelEdit()">Hủy sửa</button>
-                    <a href="admin-specs.html" class="btn btn-sm btn-outline-light">Quản lý cấu hình ⚙️</a>
-                </div>
-            </div>
+        <div class="admin-sidebar">
+            <a href="home.html" class="logo"><i class="fas fa-home me-2"></i> KVB STORE</a>
+            <ul class="admin-nav">
+                <li class="active" onclick="switchAdminTab('products', this)"><i class="fas fa-box"></i> Quản lý Sản phẩm</li>
+                <li onclick="switchAdminTab('orders', this)"><i class="fas fa-shopping-cart"></i> Quản lý Đơn hàng</li>
+                <li onclick="window.location.href='admin-specs.html'"><i class="fas fa-cogs"></i> Quản lý Cấu hình</li>
+                <li onclick="logoutAdmin()"><i class="fas fa-sign-out-alt"></i> Đăng xuất</li>
+            </ul>
+        </div>
+
+        <div class="admin-content">
             
-            <div class="card-body">
-                <form id="productForm">
-                    <input type="hidden" id="editProductId"> 
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Tên sản phẩm</label>
-                            <input type="text" id="title" class="form-control" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Giá (VNĐ)</label>
-                            <input type="number" id="price" class="form-control" required>
-                        </div>
+            <div id="tab-products" class="admin-tab active">
+                <div class="card shadow-sm mx-auto position-relative mb-4" style="max-width: 900px;">
+                    <div id="loadingOverlay" class="loading-overlay text-danger fw-bold">Đang xử lý...</div>
+                    <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0" id="formTitle"><i class="fas fa-plus-circle me-2"></i>Thêm Sản Phẩm Mới</h5>
+                        <button class="btn btn-sm btn-light d-none" id="btnCancelEdit" onclick="cancelEdit()">Hủy sửa</button>
                     </div>
-                    
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Danh mục</label>
-                            <select id="category" class="form-select" required>
-                                <option value="">-- Đang tải... --</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Link ảnh (URL)</label>
-                            <input type="text" id="image" class="form-control" required>
-                        </div>
+                    <div class="card-body">
+                        <form id="productForm">
+                            <input type="hidden" id="editProductId"> 
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Tên sản phẩm</label>
+                                    <input type="text" id="title" class="form-control" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Giá (VNĐ)</label>
+                                    <input type="number" id="price" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Danh mục</label>
+                                    <select id="category" class="form-select" required>
+                                        <option value="">-- Đang tải... --</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Link ảnh (URL)</label>
+                                    <input type="text" id="image" class="form-control" required>
+                                </div>
+                            </div>
+                            <div id="dynamicSpecsContainer" class="p-3 mb-3 bg-light border rounded d-none">
+                                <h6 class="text-danger border-bottom pb-2 mb-3">Thông số kỹ thuật</h6>
+                                <div id="specsFields" class="row g-3"></div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Mô tả ngắn</label>
+                                <textarea id="description" class="form-control" rows="2"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-danger w-100 fw-bold fs-5" id="btnSubmit">THÊM SẢN PHẨM</button>
+                        </form>
                     </div>
+                </div>
 
-                    <div id="dynamicSpecsContainer" class="p-3 mb-3 bg-light border rounded d-none">
-                        <h6 class="text-danger border-bottom pb-2 mb-3">Thông số kỹ thuật</h6>
-                        <div id="specsFields" class="row g-3"></div>
+                <div class="card shadow-sm mx-auto" style="max-width: 1000px;">
+                    <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0"><i class="fas fa-list me-2"></i>Danh Sách Sản Phẩm</h5>
+                        <input type="text" id="adminSearchInput" class="form-control form-control-sm w-50" placeholder="🔍 Nhập tên sản phẩm để tìm nhanh..." onkeyup="searchAdminProducts()">
                     </div>
-                    
-                    <div class="mb-3">
-                        <label class="form-label">Mô tả ngắn</label>
-                        <textarea id="description" class="form-control" rows="2"></textarea>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Ảnh</th>
+                                        <th>Tên sản phẩm</th>
+                                        <th>Danh mục</th>
+                                        <th>Giá</th>
+                                        <th class="text-center">Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="adminProductList"></tbody>
+                            </table>
+                        </div>
                     </div>
-                    
-                    <button type="submit" class="btn btn-danger w-100 fw-bold" id="btnSubmit">THÊM SẢN PHẨM</button>
-                </form>
-            </div>
-        </div>
-
-        <div class="card shadow-sm mx-auto" style="max-width: 1000px;">
-            <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">Danh Sách Sản Phẩm Trong Kho</h5>
-                <input type="text" id="adminSearchInput" class="form-control form-control-sm w-50" placeholder="🔍 Nhập tên sản phẩm để tìm nhanh..." onkeyup="searchAdminProducts()">
-            </div>
-            <div class="card-body p-0">
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle mb-0">
-                        <thead class="table-light">
-                            <tr>
-                                <th>Ảnh</th>
-                                <th>Tên sản phẩm</th>
-                                <th>Danh mục</th>
-                                <th>Giá</th>
-                                <th class="text-center">Hành động</th>
-                            </tr>
-                        </thead>
-                        <tbody id="adminProductList">
-                        </tbody>
-                    </table>
                 </div>
             </div>
-        </div>
 
+            <div id="tab-orders" class="admin-tab">
+                <div class="card shadow-sm mx-auto">
+                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0"><i class="fas fa-clipboard-list me-2"></i>Quản Lý Đơn Hàng Của Khách</h5>
+                        <button class="btn btn-sm btn-light fw-bold" onclick="loadAllOrders()"><i class="fas fa-sync-alt"></i> Làm mới</button>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Mã ĐH</th>
+                                        <th>Khách hàng</th>
+                                        <th>SĐT / Địa chỉ</th>
+                                        <th>Tổng tiền</th>
+                                        <th>Trạng thái</th>
+                                        <th>Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-order-list">
+                                    <tr><td colspan="6" class="text-center py-4 text-muted">Đang tải dữ liệu...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </div>
 
     <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Kiểm tra quyền Admin
+            const role = localStorage.getItem('userRole');
+            if (role !== 'admin') {
+                alert("⛔ Bạn không có quyền truy cập trang quản trị!");
+                window.location.href = 'home.html';
+                return;
+            }
+
+            // Khởi chạy data cho Tab mặc định (Sản phẩm)
+            fetchSpecsConfig();
+            fetchAdminProducts();
+        });
+
+        // HÀM CHUYỂN TAB ADMIN
+        function switchAdminTab(tabId, element) {
+            document.querySelectorAll('.admin-nav li').forEach(li => li.classList.remove('active'));
+            element.classList.add('active');
+            
+            document.querySelectorAll('.admin-tab').forEach(tab => tab.classList.remove('active'));
+            document.getElementById('tab-' + tabId).classList.add('active');
+
+            // Nếu chuyển sang tab Đơn hàng thì load dữ liệu đơn hàng
+            if (tabId === 'orders') {
+                loadAllOrders();
+            }
+        }
+
+        // Đăng xuất
+        function logoutAdmin() {
+            localStorage.clear();
+            window.location.href = 'home.html';
+        }
+
+        // ==========================================
+        // MODULE 1: QUẢN LÝ SẢN PHẨM (Code cũ)
+        // ==========================================
         let categorySpecsConfig = {};
         let allProducts = []; 
 
@@ -107,14 +194,13 @@
             } catch (error) { console.error("Lỗi tải config:", error); }
         }
 
-        // ĐÃ FIX: p._id || p.id
         function renderAdminTable(dataToRender) {
             const tbody = document.getElementById('adminProductList');
             tbody.innerHTML = '';
             dataToRender.forEach(p => {
                 tbody.innerHTML += `
                     <tr>
-                        <td><img src="${p.image}" class="product-img-sm border rounded" style="width:50px;height:50px;object-fit:contain;"></td>
+                        <td><img src="${p.image}" class="product-img-sm border rounded"></td>
                         <td class="fw-bold">${p.title}</td>
                         <td><span class="badge bg-secondary">${p.category}</span></td>
                         <td class="text-danger fw-bold">${p.price.toLocaleString()}đ</td>
@@ -137,9 +223,7 @@
 
         function searchAdminProducts() {
             const keyword = document.getElementById('adminSearchInput').value.toLowerCase();
-            const filteredProducts = allProducts.filter(p => 
-                p.title.toLowerCase().includes(keyword)
-            );
+            const filteredProducts = allProducts.filter(p => p.title.toLowerCase().includes(keyword));
             renderAdminTable(filteredProducts); 
         }
 
@@ -153,13 +237,11 @@
             const requiredSpecs = categorySpecsConfig[categoryName];
             
             specsFields.innerHTML = '';
-
             if (requiredSpecs && requiredSpecs.length > 0) {
                 dynamicContainer.classList.remove('d-none');
                 requiredSpecs.forEach(spec => {
                     const optionsHTML = spec.options.map(opt => `<option value="${opt}">`).join('');
                     const val = existingSpecs[spec.key] || '';
-                    
                     specsFields.innerHTML += `
                         <div class="col-md-6">
                             <label class="form-label small fw-bold text-secondary">${spec.label}</label>
@@ -173,7 +255,6 @@
             }
         }
 
-        // ĐÃ FIX: Biến truyền vào fetch là id, không phải _id
         async function deleteProduct(id) {
             if (!confirm("⚠️ Chắc chắn xóa sản phẩm này khỏi Database?")) return;
             try {
@@ -187,7 +268,7 @@
             const p = allProducts.find(item => (item._id || item.id) === id);
             if(!p) return;
 
-            document.getElementById('formTitle').innerText = "Cập Nhật Sản Phẩm";
+            document.getElementById('formTitle').innerHTML = '<i class="fas fa-edit me-2"></i>Cập Nhật Sản Phẩm';
             document.getElementById('btnSubmit').innerText = "LƯU THAY ĐỔI";
             document.getElementById('btnSubmit').classList.replace('btn-danger', 'btn-success');
             document.getElementById('btnCancelEdit').classList.remove('d-none');
@@ -205,7 +286,7 @@
 
         function cancelEdit() {
             document.getElementById('productForm').reset();
-            document.getElementById('formTitle').innerText = "Thêm Sản Phẩm Mới";
+            document.getElementById('formTitle').innerHTML = '<i class="fas fa-plus-circle me-2"></i>Thêm Sản Phẩm Mới';
             document.getElementById('btnSubmit').innerText = "THÊM SẢN PHẨM";
             document.getElementById('btnSubmit').classList.replace('btn-success', 'btn-danger');
             document.getElementById('btnCancelEdit').classList.add('d-none');
@@ -246,15 +327,89 @@
                     alert(editId ? "✅ Cập nhật thành công!" : "✅ Thêm mới thành công!");
                     cancelEdit(); 
                     fetchAdminProducts(); 
-                } else {
-                    alert("❌ Có lỗi xảy ra!");
-                }
+                } else { alert("❌ Có lỗi xảy ra!"); }
             } catch (error) { alert("❌ Không kết nối được Backend"); }
             finally { document.getElementById('loadingOverlay').style.display = 'none'; }
         });
 
-        fetchSpecsConfig();
-        fetchAdminProducts();
+        // ==========================================
+        // MODULE 2: QUẢN LÝ ĐƠN HÀNG
+        // ==========================================
+        async function loadAllOrders() {
+            const tbody = document.getElementById('admin-order-list');
+            tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-muted">Đang tải dữ liệu đơn hàng...</td></tr>';
+            try {
+                const res = await fetch('http://localhost:3000/api/admin/orders');
+                const orders = await res.json();
+
+                if (orders.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4">Chưa có đơn hàng nào.</td></tr>';
+                    return;
+                }
+
+                let html = '';
+                orders.forEach(order => {
+                    const customer = order.customerInfo || {};
+                    const date = new Date(order.createdAt).toLocaleDateString('vi-VN') + ' ' + new Date(order.createdAt).toLocaleTimeString('vi-VN');
+                    
+                    const statuses = ['Chờ xác nhận', 'Đang xử lý', 'Đang giao', 'Hoàn tất', 'Đã hủy'];
+                    let statusOptions = statuses.map(s => 
+                        `<option value="${s}" ${order.status === s ? 'selected' : ''}>${s}</option>`
+                    ).join('');
+
+                    html += `
+                        <tr>
+                            <td>
+                                <div class="fw-bold text-danger">${order.orderCode}</div>
+                                <div class="small text-muted">${date}</div>
+                            </td>
+                            <td>
+                                <div class="fw-bold">${customer.fullname || 'Khách vãng lai'}</div>
+                                <div class="small"><span class="badge bg-secondary">${order.paymentMethod}</span></div>
+                            </td>
+                            <td>
+                                <div><i class="fas fa-phone-alt me-1 text-muted"></i>${customer.phone || 'N/A'}</div>
+                                <div class="small text-muted"><i class="fas fa-map-marker-alt me-1"></i>${customer.address || 'N/A'}</div>
+                            </td>
+                            <td class="fw-bold text-primary fs-6">${(order.totalAmount || 0).toLocaleString('vi-VN')}đ</td>
+                            <td>
+                                <select class="form-select form-select-sm" id="status-${order._id}">
+                                    ${statusOptions}
+                                </select>
+                            </td>
+                            <td>
+                                <button class="btn btn-sm btn-success fw-bold" onclick="updateOrderStatus('${order._id}')">
+                                    <i class="fas fa-save"></i> LƯU
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                });
+                tbody.innerHTML = html;
+            } catch (error) {
+                tbody.innerHTML = '<tr><td colspan="6" class="text-center text-danger">Lỗi kết nối Server!</td></tr>';
+            }
+        }
+
+        window.updateOrderStatus = async function(orderId) {
+            const newStatus = document.getElementById(`status-${orderId}`).value;
+            try {
+                const res = await fetch(`http://localhost:3000/api/admin/orders/${orderId}/status`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status: newStatus })
+                });
+
+                if (res.ok) {
+                    alert("✅ Đã cập nhật trạng thái đơn hàng!");
+                } else {
+                    const data = await res.json();
+                    alert("❌ Lỗi: " + data.error);
+                }
+            } catch (err) {
+                alert("❌ Lỗi kết nối Server");
+            }
+        };
     </script>
 </body>
 </html>

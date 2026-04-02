@@ -286,6 +286,32 @@ app.get('/api/orders/my-orders', async (req, res) => {
     }
 });
 
+// --- API LẤY TẤT CẢ ĐƠN HÀNG (Dành cho Admin) ---
+app.get('/api/admin/orders', async (req, res) => {
+    try {
+        // Lấy tất cả đơn hàng, sắp xếp mới nhất lên đầu
+        const orders = await Order.find().sort({ createdAt: -1 });
+        res.json(orders);
+    } catch (err) {
+        res.status(500).json({ error: "Lỗi lấy danh sách đơn hàng" });
+    }
+});
+
+// --- API CẬP NHẬT TRẠNG THÁI ĐƠN HÀNG ---
+app.put('/api/admin/orders/:id/status', async (req, res) => {
+    try {
+        const { status } = req.body;
+        const updatedOrder = await Order.findByIdAndUpdate(
+            req.params.id,
+            { status },
+            { new: true }
+        );
+        res.json({ message: "Cập nhật trạng thái thành công!", order: updatedOrder });
+    } catch (err) {
+        res.status(500).json({ error: "Lỗi cập nhật trạng thái" });
+    }
+});
+
 app.listen(PORT, () => {
   console.log(`🚀 Server đang chạy cực mượt tại: http://localhost:${PORT}`);
 });

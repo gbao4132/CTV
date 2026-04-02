@@ -157,6 +157,18 @@ document.addEventListener('DOMContentLoaded', function () {
                     <a href="#" class="btn btn-outline-danger w-100 fw-bold" onclick="logout(event)">ĐĂNG XUẤT</a>
                 `;
             }
+
+            // Hiển thị nút Admin Panel ở Header nếu là Admin
+            const btnAdmin = document.getElementById('btn-admin-panel');
+            if (btnAdmin) {
+                btnAdmin.style.display = (userRole === 'admin') ? 'inline-block' : 'none';
+            }
+        } else {
+            // Nếu chưa đăng nhập, ẩn nút Admin Panel
+            const btnAdmin = document.getElementById('btn-admin-panel');
+            if (btnAdmin) {
+                btnAdmin.style.display = 'none';
+            }
         }
     }
 
